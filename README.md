@@ -18,3 +18,11 @@ The Commons composer stores drafts in the current browser's local storage only. 
 
 ## Run locally
 Open index.html in a browser or serve the repository root with a static HTTP server. No package installation is required.
+
+
+## Accessibility, languages and privacy
+- The landing page includes a language selector with 13 initial interface languages: Polish, English, German, Spanish, French, Portuguese, Italian, Dutch, Russian, Ukrainian, Arabic, Chinese and Japanese.
+- Language preference is stored locally in the visitor's browser. There is no account wall, paid access, advertising tracker, or analytics script in this static frontend.
+- Commons entries are browser-local drafts only. They are not published or transmitted to a server.
+- The project will provide short, readable privacy information before any future feature collects or processes personal data. Legal transparency will not be hidden behind dark patterns or unnecessary jargon.
+- The current language packs translate the primary navigation and key landing-page sections; a complete translation of every page element and additional languages remains an ongoing task.
