@@ -31,3 +31,20 @@
 .plain-privacy{max-width:760px;margin:18px auto 0;padding:15px 18px;border:1px solid #00d4ff30;border-radius:8px;background:#0b1119;color:#aeb8c8;font-size:11px;line-height:1.8;text-align:center}
 @media(max-width:800px){.language-control{margin-left:auto;margin-right:14px}.language-control label{display:none}.language-control select{max-width:116px;padding:8px 5px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Human-first AI participation section */
+.ai-panel{display:grid;grid-template-columns:1.15fr .85fr;gap:35px;align-items:center;padding:48px;border:1px solid #00d4ff40;border-radius:12px;background:radial-gradient(ellipse at 85% 45%,#15263b99,transparent 58%),linear-gradient(145deg,#111421,#0a0d16)}
+.ai-copy h2{font:600 clamp(36px,5vw,56px)/1.08 var(--display);letter-spacing:-2px;margin:22px 0}
+.ai-copy>p{max-width:610px;color:var(--muted);font-size:14px;line-height:1.9}
+.ai-actions{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:25px 0}
+.ai-note{font-size:10px!important;color:#7f899a!important}
+.ai-orbit{height:280px;position:relative;display:grid;place-items:center}
+.ai-orbit-ring{position:absolute;width:240px;height:240px;border:1px solid #00d4ff55;border-radius:50%;box-shadow:0 0 45px #00d4ff18,inset 0 0 35px #ff2e9a12}
+.ai-orbit-ring:before,.ai-orbit-ring:after{content:"";position:absolute;inset:25px;border:1px dashed #ff2e9a66;border-radius:50%;transform:rotate(55deg) scaleX(1.4)}
+.ai-orbit-ring:after{transform:rotate(-55deg) scaleX(1.4);border-color:#00d4ff55}
+.ai-orbit-core{z-index:1;width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:#111a29;border:1px solid #00d4ff88;box-shadow:0 0 35px #00d4ff30;font:600 16px var(--display);letter-spacing:1px}
+.ai-orbit-core span{color:var(--pink);padding:0 5px}
+.ai-orbit i,.ai-orbit b,.ai-orbit em{position:absolute;font:600 9px var(--display);letter-spacing:2px;color:#9ca8bb;font-style:normal}
+.ai-orbit i{top:12%;left:15%;color:var(--cyan)}.ai-orbit b{right:8%;top:48%;color:var(--pink)}.ai-orbit em{bottom:10%;left:20%;color:#b6a1ff}
+@media(max-width:800px){.ai-panel{grid-template-columns:1fr;padding:30px}.ai-orbit{height:230px}.ai-orbit-ring{width:205px;height:205px}}
+@media(max-width:520px){.ai-panel{padding:23px 18px}.ai-actions{align-items:flex-start;flex-direction:column;gap:15px}}
