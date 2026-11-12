@@ -72,7 +72,18 @@
     <section class="section wrap" id="commons">
       <div class="section-kicker">03 / COMMONS</div>
       <div class="commons-panel"><div><div class="eyebrow"><span class="pulse"></span> OTWARTA PRZESTRZEŃ</div><h2>Rozmowa jest<br><span class="gradient-text">początkiem.</span></h2><p>Masz pytanie, pomysł albo doświadczenie, którym chcesz się podzielić? Zacznij od rozmowy. Nie musisz mieć gotowego rozwiązania ani zakładać konta, żeby poznać ideę.</p><a class="button button-primary" href="#dolacz">Zacznij tutaj <span>↗</span></a></div><div class="commons-visual"><div class="chat-bubble bubble-one">Co możemy zrobić razem?</div><div class="chat-bubble bubble-two">Zacznijmy od słuchania.</div><div class="chat-bubble bubble-three">Jedna rozmowa. Wiele możliwości. <span>✳</span></div><div class="commons-orb">N<span>·</span></div></div></div>
-      <p class="notice"><span>ⓘ</span> Formularz kontaktowy i publiczna komunikacja zostaną podłączone po wdrożeniu bezpiecznego zaplecza. Ta wersja nie zbiera ani nie wysyła Twoich danych.</p>
+      <div class="commons-board" aria-labelledby="commons-board-title">
+        <div class="commons-board-head"><div><span class="section-kicker">OTWARTA TABLICA</span><h3 id="commons-board-title">Tematy do wspólnej rozmowy</h3><p>Dodaj pytanie lub propozycję. W tym prototypie wpisy pozostają wyłącznie w tej przeglądarce.</p></div><button class="button button-primary" id="openTopicForm" type="button">Dodaj temat <span>＋</span></button></div>
+        <form id="topicForm" class="topic-form" hidden>
+          <label for="topicTitle">Tytuł tematu</label><input id="topicTitle" name="title" maxlength="100" required placeholder="Co chcesz poruszyć?">
+          <label for="topicBody">Treść</label><textarea id="topicBody" name="body" rows="4" maxlength="1200" required placeholder="Opisz pytanie, pomysł lub propozycję współpracy."></textarea>
+          <div class="topic-form-actions"><button class="button button-primary" type="submit">Zapisz lokalny szkic <span>↗</span></button><button class="text-link" id="cancelTopicForm" type="button">Anuluj</button></div>
+          <p class="form-disclaimer">To nie jest jeszcze publikacja publiczna. Wpis nie zostanie wysłany na serwer ani udostępniony innym osobom.</p>
+        </form>
+        <div id="topicList" class="topic-list" aria-live="polite"></div>
+        <p id="topicEmpty" class="topic-empty">Nie ma jeszcze lokalnych wpisów. Możesz przygotować pierwszy szkic.</p>
+      </div>
+      <p class="notice"><span>ⓘ</span> Ważne: tablica działa obecnie lokalnie na tym urządzeniu. Wspólne konta, wiadomości i publiczne publikowanie nie są jeszcze aktywne — nie przedstawiamy prototypu jako działającej komunikacji między użytkownikami.</p>
     </section>
 
     <section class="section section-alt" id="zasady"><div class="wrap">
