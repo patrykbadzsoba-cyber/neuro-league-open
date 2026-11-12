@@ -5,23 +5,16 @@ Open platform for human connection and cooperation.
 ## Project principles
 - Human dignity, freedom of thought and cooperation.
 - Technology serves life; people remain in control.
-- Basic participation is free; voluntary support never grants ownership or privileged access.
+- Basic participation is intended to be free; voluntary support never grants ownership or privileged access.
 - Privacy by design, right to leave, and forkability.
-- The manifesto **“Posiadać czy być?”** is a separate document and is not the portal's name or homepage.
+- No fictional profiles or fabricated community activity.
+- The manifesto “Posiadać czy być?” is separate from the portal and is not its homepage.
 
 ## Current implementation
-A responsive, mobile-first Polish-language portal foundation built with plain HTML, CSS and JavaScript. No build step or package installation is required.
+A responsive Polish-language static frontend with the project landing page, principles, project areas (NEURAL LINK, NEUROHARMONY, regeneration, Commons, technology and GLOBAL DNB), mobile navigation, and a local-only Commons discussion topic composer.
 
-### Files
-- `index.html` — portal structure and content
-- `styles.css` — responsive visual system
-- `app.js` — mobile navigation and in-page navigation
-
-## Important implementation boundary
-This initial version is a front-end foundation. It does not yet implement accounts, authentication, user profiles, real-time messaging, persistent community posts, moderation workflows, or a database. Do not present those functions as live until a secure backend and privacy/safety controls are implemented and tested.
+## Important limitation
+The Commons composer stores drafts in the current browser's local storage only. It does not publish to a shared server or send messages to other visitors. There are no user accounts, verified identities, public profiles, private messaging, server-side moderation, or database yet. These must be implemented with a secure backend and privacy/safety controls before claiming multi-user communication is live.
 
 ## Run locally
-Open `index.html` in a browser, or serve the repository root with any static HTTP server.
-
-## Deployment
-GitHub Pages can host this static front end. Configure Pages to deploy from the `main` branch, root folder. A custom domain and email address must be configured and verified separately.
+Open index.html in a browser or serve the repository root with a static HTTP server. No package installation is required.
