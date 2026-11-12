@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07080f">
+  <meta name="description" content="LUDZKOŚĆ — otwarte badanie nad współpracą ludzi, agentów AI i lokalnych zasobów dla dobra wspólnego.">
+  <title>LUDZKOŚĆ — NEURO LEAGUE OPEN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .humanity-hero{padding:100px 0 76px;display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center}
+    .humanity-hero h1{font:700 clamp(3.4rem,8vw,7rem)/.96 'Space Grotesk',sans-serif;letter-spacing:-.07em;margin:24px 0}
+    .humanity-hero h1 span,.gradient{background:linear-gradient(100deg,#ff2e9a,#00d4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .humanity-lead{font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.7;max-width:690px;color:var(--muted,#a8a8b8)}
+    .humanity-orb{min-height:340px;display:grid;place-items:center;position:relative}
+    .humanity-orb:before,.humanity-orb:after{content:"";position:absolute;border:1px solid #00d4ff55;border-radius:50%;width:280px;height:280px;transform:rotate(35deg) scaleY(.55)}
+    .humanity-orb:after{width:220px;height:220px;border-color:#ff2e9a77;transform:rotate(-35deg) scaleY(.55)}
+    .humanity-core{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ff2e9a,#34204d 48%,#07131c 78%);box-shadow:0 0 90px #00d4ff33,0 0 60px #ff2e9a33;font:700 1.4rem 'Space Grotesk';z-index:1}
+    .humanity-core small{display:block;font-size:.65rem;letter-spacing:.2em}
+    .humanity-kicker{color:#00d4ff;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase}
+    .humanity-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+    .humanity-card{padding:26px;border:1px solid #ffffff18;border-radius:18px;background:#ffffff06}
+    .humanity-card .num{color:#00d4ff;font-size:.8rem;letter-spacing:.15em}
+    .humanity-card h3{font:600 1.25rem 'Space Grotesk';margin:18px 0 10px}
+    .humanity-card p,.humanity-copy{color:var(--muted,#a8a8b8);line-height:1.7}
+    .humanity-steps{counter-reset:step;display:grid;gap:0;margin-top:32px}
+    .humanity-step{counter-increment:step;display:grid;grid-template-columns:64px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid #ffffff18}
+    .humanity-step:before{content:"0" counter(step);color:#ff2e9a;font:600 1.1rem 'Space Grotesk'}
+    .humanity-step h3{margin:0 0 6px;font:600 1.15rem 'Space Grotesk'}
+    .humanity-step p{margin:0;color:var(--muted,#a8a8b8);line-height:1.65}
+    .humanity-callout{padding:30px;border:1px solid #00d4ff44;border-radius:18px;background:linear-gradient(120deg,#00d4ff0c,#ff2e9a0c);margin-top:34px}
+    .humanity-callout p{line-height:1.7}
+    .humanity-links{display:flex;gap:18px;flex-wrap:wrap;margin-top:25px}
+    .back-link{display:inline-block;margin:24px 0;color:inherit;text-decoration:none}
+    @media(max-width:760px){.humanity-hero{grid-template-columns:1fr;padding:70px 0 45px}.humanity-orb{min-height:260px}.humanity-grid{grid-template-columns:1fr}.humanity-step{grid-template-columns:44px 1fr}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">N<span>·</span></span><span class="brand-name">NEURO LEAGUE <b>OPEN</b></span></a>
+    <nav><a href="index.html#idea">Idea</a><a href="#pytanie">Pytanie</a><a href="#pilot">Pilot</a><a class="nav-join" href="#wspolpraca">Współpraca <span>↗</span></a></nav>
+  </header>
+  <main>
+    <section class="humanity-hero wrap">
+      <div>
+        <div class="humanity-kicker">Otwarte zaproszenie badawcze · HUMANITY</div>
+        <h1>LUDZKOŚĆ.<br><span>Wspólne zasoby.</span><br>Wspólna przyszłość.</h1>
+        <p class="humanity-lead">Jak ludzie, otwarte technologie i interoperacyjne systemy AI mogą pomagać sobie nawzajem w dostępie do podstawowych zasobów — z poszanowaniem godności, prywatności i autonomii?</p>
+        <div class="hero-actions"><a class="button button-primary" href="#pilot">Zobacz pierwszy krok <span>↓</span></a><a class="text-link" href="https://github.com/aaif/technical-committee/issues/11" target="_blank" rel="noopener noreferrer">Dyskusja w AAIF ↗</a></div>
+      </div>
+      <div class="humanity-orb" aria-label="Symbol połączenia ludzi i technologii"><div class="humanity-core">HUMAN<small>FIRST</small></div></div>
+    </section>
+    <section class="section section-alt" id="pytanie"><div class="wrap">
+      <div class="section-kicker">01 / PYTANIE BADAWCZE</div>
+      <div class="section-heading"><h2>Co, jeśli współpraca<br><span class="muted">będzie łatwiejsza niż wykluczenie?</span></h2><p>Badamy, jak dobrowolna koordynacja potrzeb i dostępnych zasobów może uzupełniać istniejące usługi i łańcuchy dostaw — bez ich destabilizowania.</p></div>
+      <div class="humanity-grid">
+        <article class="humanity-card"><span class="num">01 / POTRZEBY</span><h3>Żywność i mieszkanie</h3><p>Lepsze łączenie realnych potrzeb z dobrowolnie udostępnioną pomocą i wolnymi zasobami.</p></article>
+        <article class="humanity-card"><span class="num">02 / ZASOBY</span><h3>Energia i transport</h3><p>Współdzielenie lokalnej dostępności, nadwyżek i możliwości — z zachowaniem bezpieczeństwa usług.</p></article>
+        <article class="humanity-card"><span class="num">03 / WIEDZA</span><h3>Naprawa i zdrowie</h3><p>Łączenie ludzi, kompetencji, narzędzi i informacji, by wspierać naprawę, ponowne użycie i dostęp do pomocy.</p></article>
+      </div>
+    </div></section>
+    <section class="section wrap" id="pilot">
+      <div class="section-kicker">02 / PIERWSZY PILOT</div>
+      <div class="section-heading"><h2>Mały test.<br><span class="muted">Prawdziwe dowody.</span></h2><p>Nie zaczynamy od globalnej przebudowy systemu. Zaczynamy od jednego lokalnego obszaru, jednego rodzaju zasobu i mierzalnego wyniku.</p></div>
+      <div class="humanity-steps">
+        <div class="humanity-step"><div><h3>Mapa dobrowolnych zasobów</h3><p>Spisujemy wyłącznie zasoby i możliwości, które uczestnicy świadomie zgłosili do pilota.</p></div></div>
+        <div class="humanity-step"><div><h3>Dopasowanie potrzeby do zasobu</h3><p>Testujemy otwarte, interoperacyjne narzędzia do wyszukiwania i koordynacji — z minimalizacją danych.</p></div></div>
+        <div class="humanity-step"><div><h3>Dobrowolna realizacja</h3><p>Uczestnicy sami decydują, czy chcą dokonać wymiany, pomóc lub wycofać się. Żadnego przymusu.</p></div></div>
+        <div class="humanity-step"><div><h3>Weryfikacja i jawny raport</h3><p>Publikujemy metodę, wyniki, ograniczenia, koszty i błędy. Nie ogłaszamy sukcesu bez dowodów.</p></div></div>
+      </div>
+      <div class="humanity-callout"><div class="humanity-kicker">Granice i zabezpieczenia</div><p>To zaproszenie do badań, nie plan wyłączania banków, płatności ani łańcuchów dostaw. Nie obiecujemy darmowego dostępu do usług, nie zastępujemy opieki ani instytucji publicznych. Każdy udział jest dobrowolny, a realne testy wymagają zgody uczestników, oceny ryzyka i zgodności z prawem.</p></div>
+    </section>
+    <section class="section section-alt" id="wspolpraca"><div class="wrap">
+      <div class="section-kicker">03 / WSPÓŁPRACA OTWARTA</div>
+      <div class="section-heading"><h2>Technologia jako narzędzie.<br><span class="muted">Człowiek zachowuje decyzję.</span></h2><p>Zapraszamy badaczy, organizacje społeczne, twórców otwartego oprogramowania, lokalne inicjatywy i osoby zainteresowane praktycznym testowaniem pomysłu.</p></div>
+      <div class="humanity-grid">
+        <article class="humanity-card"><span class="num">AAIF</span><h3>Interoperacyjność agentów</h3><p>Rozmowa o standardach, bezpiecznej komunikacji i współpracy systemów AI.</p><a href="https://github.com/aaif/technical-committee/issues/11" target="_blank" rel="noopener noreferrer">Zobacz zgłoszenie #11 ↗</a></article>
+        <article class="humanity-card"><span class="num">NEURAL LINK</span><h3>Otwarta współpraca</h3><p>Wspólne zasady: autonomia, prywatność, przejrzystość i prawo do odejścia.</p><a href="index.html#zasady">Poznaj zasady NLO ↗</a></article>
+        <article class="humanity-card"><span class="num">WSPÓLNOTA</span><h3>Małe lokalne pilotaże</h3><p>Praktyczne projekty, które można sprawdzić, udokumentować i niezależnie ocenić.</p><a href="index.html#commons">Przejdź do Commons ↗</a></article>
+      </div>
+      <div class="humanity-links"><a class="button button-primary" href="https://github.com/aaif/technical-committee/issues/11" target="_blank" rel="noopener noreferrer">Otwórz zaproszenie AAIF <span>↗</span></a><a class="text-link" href="index.html">Powrót do NEURO LEAGUE OPEN ↗</a></div>
+    </div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-main"><a class="brand" href="index.html"><span class="brand-mark">N<span>·</span></span><span class="brand-name">NEURO LEAGUE <b>OPEN</b></span></a><p>LIFE IS THE CENTER.</p><div class="footer-links"><a href="index.html#zasady">Zasady</a><a href="https://github.com/aaif/technical-committee/issues/11">AAIF #11</a></div></div><div class="wrap footer-bottom"><span>© 2026 NEURO LEAGUE OPEN</span><span>Udział dobrowolny. Człowiek w centrum.</span><a href="#top">Powrót na górę ↑</a></div></footer>
+</body></html>
