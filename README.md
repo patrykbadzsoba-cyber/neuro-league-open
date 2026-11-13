@@ -30,3 +30,8 @@ Open index.html in a browser or serve the repository root with a static HTTP ser
 ## Global Experiment — environmental restoration
 
 - [Atmospheric Restoration](ATMOSPHERIC_RESTORATION.md): project methodology for diagnosing air pollution, identifying emission sources, planning reductions, coordinating approved monitoring and evaluating whether air quality is recovering.
+
+
+## Geneza projektu
+- [Geneza inicjatywy — skrót dla odwiedzających portal](GENEZA_PORTALU.md)
+- [Oficjalny rejestr genezy pomysłów i autorstwa](IDEA_ORIGINS_REGISTER.md)
