@@ -1,0 +1,37 @@
+name: Kontakt z NEURO LEAGUE OPEN
+description: Wyślij wiadomość do zespołu projektu.
+title: "[Kontakt] "
+labels: ["contact"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Dziękujemy za kontakt. Zgłoszenie zostanie opublikowane publicznie w repozytorium projektu. **Nie wpisuj tu danych wrażliwych, haseł, adresu ani prywatnych informacji.**
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Temat wiadomości
+      options:
+        - Chcę dołączyć
+        - Propozycja współpracy
+        - Pytanie o projekt
+        - Zgłoszenie problemu na stronie
+        - Inne
+    validations:
+      required: true
+  - type: textarea
+    id: message
+    attributes:
+      label: Wiadomość
+      description: Opisz krótko, w czym możemy pomóc.
+      placeholder: Napisz swoją wiadomość…
+    validations:
+      required: true
+  - type: input
+    id: reply_contact
+    attributes:
+      label: Kontakt zwrotny (opcjonalnie)
+      description: Podaj publiczny adres e-mail tylko jeśli chcesz otrzymać odpowiedź. Zgłoszenie będzie publiczne.
+      placeholder: name@example.com
+    validations:
+      required: false
