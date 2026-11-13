@@ -30,5 +30,5 @@ const replacements=d.labels;document.querySelectorAll("main .eyebrow,main h2,mai
 const back=document.querySelector("header a[href='index.html']");if(back)back.textContent="N· NEURO LEAGUE OPEN";const top=document.querySelector("header span a");if(top)top.textContent=d.labels[35];const foot=document.querySelector("footer a");if(foot)foot.textContent=d.labels[35];
 }}
 function putEl(el,v){if(el)el.textContent=v}
-lang.addEventListener("change",()=>apply(lang.value));apply(current);
+lang.addEventListener("change",()=>{if(lang.value==="pl"){try{localStorage.setItem("nlo-language","pl")}catch{}location.reload();return;}apply(lang.value)});apply(current);
 })();
