@@ -1,0 +1,51 @@
+{
+  "id": "NL-003",
+  "name": "Ziarno Harmonii",
+  "type": "digital_cooperation_record",
+  "version": "0.1-prototype",
+  "language": "pl",
+  "principle": "Nie ma ceny. Ma historię.",
+  "purpose": "Zapisywać ślad wdzięczności, współpracy i wkładu w dobro wspólne.",
+  "meaning": {
+    "symbol": "ziarno",
+    "represents": ["wdzięczność", "współpracę", "wzajemną pomoc", "pamięć wspólnego działania"],
+    "not_a": ["pieniądz", "udział", "papier wartościowy", "obietnica zysku"]
+  },
+  "holder": {
+    "participant_id": null,
+    "display_name": null,
+    "privacy": "pseudonym_by_default"
+  },
+  "history": {
+    "created_at": null,
+    "origin": "NEURAL LINK",
+    "story": null,
+    "contribution": null,
+    "evidence_uri": null
+  },
+  "gift": {
+    "transferable": true,
+    "mode": "voluntary_gift",
+    "sale_allowed": false,
+    "price": null,
+    "transfer_log": []
+  },
+  "ai_readable": {
+    "purpose": "Understand the context and history of a contribution, not to rank people.",
+    "ranking": false,
+    "automated_rewards": false
+  },
+  "technical_status": {
+    "prototype_only": true,
+    "blockchain_deployed": false,
+    "smart_contract": null,
+    "wallet_address": null,
+    "market_listing": false,
+    "monetary_value": null
+  },
+  "governance": {
+    "consent_required": true,
+    "revocable_personal_data": true,
+    "no_private_keys_or_sensitive_data": true
+  }
+}
