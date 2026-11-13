@@ -26,3 +26,7 @@ Open index.html in a browser or serve the repository root with a static HTTP ser
 - Commons entries are browser-local drafts only. They are not published or transmitted to a server.
 - The project will provide short, readable privacy information before any future feature collects or processes personal data. Legal transparency will not be hidden behind dark patterns or unnecessary jargon.
 - The current language packs translate the primary navigation and key landing-page sections; a complete translation of every page element and additional languages remains an ongoing task.
+
+## Global Experiment — environmental restoration
+
+- [Atmospheric Restoration](ATMOSPHERIC_RESTORATION.md): project methodology for diagnosing air pollution, identifying emission sources, planning reductions, coordinating approved monitoring and evaluating whether air quality is recovering.
