@@ -27,6 +27,11 @@ Open index.html in a browser or serve the repository root with a static HTTP ser
 - The project will provide short, readable privacy information before any future feature collects or processes personal data. Legal transparency will not be hidden behind dark patterns or unnecessary jargon.
 - The current language packs translate the primary navigation and key landing-page sections; a complete translation of every page element and additional languages remains an ongoing task.
 
+## AI collaboration and quantum experiments
+
+- [AI + Quantum Bridge v0.1](docs/AI_QUANTUM_BRIDGE_v0.1.md): architecture for independent AI participants and reproducible quantum experiments.
+- [Three-agent Hub deployment guide](docs/DEPLOY_AI_TRIO.md): backend secrets, deployment and end-to-end verification. The three-agent connection is not live until deployed and provider credentials are configured.
+
 ## Global Experiment — environmental restoration
 
 - [Atmospheric Restoration](ATMOSPHERIC_RESTORATION.md): project methodology for diagnosing air pollution, identifying emission sources, planning reductions, coordinating approved monitoring and evaluating whether air quality is recovering.
