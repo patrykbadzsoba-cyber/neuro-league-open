@@ -2,23 +2,42 @@ export class NeuroBus {
   constructor(state) { this.state = state; }
   async fetch(request) {
     const url = new URL(request.url);
-    if (request.method === "POST") {
-      const body = await request.json();
-      if (!body || !/^[a-zA-Z0-9_-]{1,64}$/.test(body.agent || "") || typeof body.message !== "string" || body.message.length > 12000 || typeof body.sessionId !== "string" || body.sessionId.length > 100) return Response.json({error:"Invalid payload"},{status:400});
-      const key = "messages";
-      const items = await this.state.storage.get(key) || [];
-      const item = {id: crypto.randomUUID(), agent: body.agent, message: body.message, sessionId: body.sessionId, createdAt: new Date().toISOString()};
-      items.push(item);
-      await this.state.storage.put(key, items.slice(-500));
-      return Response.json({ok:true, message:item},{status:201});
+    if (url.pathname.endsWith('/events')) {
+      if (request.method === 'POST') {
+        let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+        const allowedTypes = ['message','proposal','critique','revision','decision','experiment_spec','experiment_result','system'];
+        if (!body || !allowedTypes.includes(body.type) || typeof body.author !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(body.author) || typeof body.content !== 'string' || !body.content.trim() || body.content.length > 16000) return Response.json({error:'Invalid event payload'},{status:400});
+        const count = await this.state.storage.get('event_count') || 0;
+        if (count >= 1000) return Response.json({error:'Thread event limit reached (1000)'},{status:409});
+        const event = {eventId:crypto.randomUUID(),seq:count+1,threadId:url.searchParams.get('threadId') || 'unknown',type:body.type,author:body.author,model:typeof body.model==='string'?body.model.slice(0,100):null,content:body.content.trim(),replyTo:typeof body.replyTo==='string'?body.replyTo.slice(0,80):null,createdAt:new Date().toISOString()};
+        await this.state.storage.put('event:'+event.seq,event);
+        await this.state.storage.put('event_count',event.seq);
+        return Response.json({ok:true,event},{status:201});
+      }
+      if (request.method === 'GET') {
+        const count = await this.state.storage.get('event_count') || 0;
+        const after = Math.max(0,Number(url.searchParams.get('after')||0));
+        const events = [];
+        for (let i=after+1;i<=count;i++) { const item=await this.state.storage.get('event:'+i); if(item) events.push(item); }
+        return Response.json({events,lastSeq:count});
+      }
+      return new Response('Method not allowed',{status:405});
     }
-    if (request.method === "GET") {
-      const sessionId = url.searchParams.get("sessionId");
-      if (!sessionId) return Response.json({error:"sessionId required"},{status:400});
-      const items = await this.state.storage.get("messages") || [];
+    if (request.method === 'POST') {
+      const body = await request.json();
+      if (!body || !/^[a-zA-Z0-9_-]{1,64}$/.test(body.agent || '') || typeof body.message !== 'string' || body.message.length > 12000 || typeof body.sessionId !== 'string' || body.sessionId.length > 100) return Response.json({error:'Invalid payload'},{status:400});
+      const items = await this.state.storage.get('messages') || [];
+      const item = {id:crypto.randomUUID(),agent:body.agent,message:body.message,sessionId:body.sessionId,createdAt:new Date().toISOString()};
+      items.push(item); await this.state.storage.put('messages',items.slice(-500));
+      return Response.json({ok:true,message:item},{status:201});
+    }
+    if (request.method === 'GET') {
+      const sessionId = url.searchParams.get('sessionId');
+      if (!sessionId) return Response.json({error:'sessionId required'},{status:400});
+      const items = await this.state.storage.get('messages') || [];
       return Response.json({messages:items.filter(x=>x.sessionId===sessionId)});
     }
-    return new Response("Method not allowed",{status:405});
+    return new Response('Method not allowed',{status:405});
   }
 }
 const SYSTEM = `Jesteś rozmówcą AI projektu NEURO LEAGUE OPEN / NEURAL LINK. Rozmawiaj naturalnie, przede wszystkim po polsku, ale dopasuj język rozmówcy. Nie przytakuj automatycznie: analizuj argumenty, zadawaj trafne pytania, wskazuj ryzyka i koryguj błędy z szacunkiem. Rozróżniaj fakty, hipotezy i opinie. Nie wymyślaj partnerów, wyników badań, wdrożeń ani zgód.
@@ -34,6 +53,17 @@ export default {
   const headers=cors(origin,env);
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers});
   if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,geminiConfigured:!!env.GEMINI_API_KEY,metaConfigured:!!env.META_MODEL_API_KEY,quantumConfigured:!!env.IBM_QUANTUM_TOKEN},{headers});
+  if(url.pathname==="/api/v1/threads" && request.method==="POST"){
+    const threadId=crypto.randomUUID();
+    return Response.json({threadId,eventsUrl:"/api/v1/threads/"+threadId+"/events"},{status:201,headers});
+  }
+  const threadMatch=url.pathname.match(/^\/api\/v1\/threads\/([a-f0-9-]{36})\/events$/i);
+  if(threadMatch && (request.method==="GET" || request.method==="POST")){
+    const threadId=threadMatch[1];
+    const id=env.NEURO_BUS.idFromName("thread:"+threadId);
+    const target=new URL(request.url); target.pathname="/events"; target.searchParams.set("threadId",threadId);
+    return env.NEURO_BUS.get(id).fetch(new Request(target.toString(),request));
+  }
   if(url.pathname==="/api/chat" && request.method==="POST"){
     if(!env.OPENAI_API_KEY) return Response.json({error:"OPENAI_API_KEY is not configured"},{status:503,headers});
     try{
