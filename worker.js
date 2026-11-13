@@ -47,6 +47,23 @@ export default {
       return Response.json({reply},{headers});
     }catch(e){return Response.json({error:"Request failed"},{status:400,headers});}
   }
+  if(url.pathname==="/api/duo" && request.method==="POST"){
+    if(!env.OPENAI_API_KEY || !env.GEMINI_API_KEY) return Response.json({error:"Skonfiguruj sekrety OPENAI_API_KEY i GEMINI_API_KEY w Cloudflare Worker."},{status:503,headers});
+    try {
+      const body=await request.json();
+      if(!Array.isArray(body.messages) || body.messages.length>60) return Response.json({error:"Invalid messages"},{status:400,headers});
+      const transcript=body.messages.slice(-40).map(m=>{
+        const who=m.speaker==="user"?"CZŁOWIEK":m.speaker==="chatgpt"?"CHATGPT":"GEMINI";
+        return who+": "+String(m.text||"").slice(0,10000);
+      }).join("\n\n");
+      const shared="Jesteś niezależnym uczestnikiem wspólnego pokoju NEURO LEAGUE OPEN. Rozmawiasz bezpośrednio z człowiekiem i drugim modelem AI. Czytaj wspólną historię, zachowuj własne stanowisko, nie przytakuj automatycznie. Możesz krytykować i rozwijać wypowiedzi drugiego modelu. Odpowiadaj po polsku, konkretnie. Rozróżniaj fakty, hipotezy i niewiadome. Nie twierdź, że wykonałeś działania, do których nie masz narzędzi.\n\nWSPÓLNA HISTORIA:\n"+transcript+"\n\nOdpowiedz teraz na ostatnią wypowiedź człowieka, uwzględniając cały kontekst.";
+      const requests=await Promise.allSettled([
+        fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"authorization":"Bearer "+env.OPENAI_API_KEY,"content-type":"application/json"},body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-4.1-mini",instructions:shared,input:"Kontynuuj wspólną rozmowę. Przedstaw własną odpowiedź." ,max_output_tokens:1600})}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error?.message||"OpenAI request failed");return d.output_text||((d.output||[]).flatMap(x=>x.content||[]).filter(x=>x.type==="output_text").map(x=>x.text).join("\n"));}),
+        fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(env.GEMINI_MODEL||"gemini-2.5-flash")+":generateContent?key="+encodeURIComponent(env.GEMINI_API_KEY),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({systemInstruction:{parts:[{text:shared}]},contents:[{role:"user",parts:[{text:"Kontynuuj wspólną rozmowę. Przedstaw własną odpowiedź."}]}]})}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error?.message||"Gemini request failed");return (d.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n");})
+      ]);
+      return Response.json({chatgpt:requests[0].status==="fulfilled"?requests[0].value:null,gemini:requests[1].status==="fulfilled"?requests[1].value:null,errors:{chatgpt:requests[0].status==="rejected"?String(requests[0].reason.message):null,gemini:requests[1].status==="rejected"?String(requests[1].reason.message):null}},{headers});
+    } catch(e) { return Response.json({error:e.message||"Duo request failed"},{status:400,headers}); }
+  }
   if(url.pathname==="/api/bus"){
     if(!env.NEURO_BUS_TOKEN || request.headers.get("x-neuro-token")!==env.NEURO_BUS_TOKEN) return Response.json({error:"Unauthorized"},{status:401,headers});
     const id=env.NEURO_BUS.idFromName("global");
