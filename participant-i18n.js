@@ -115,6 +115,7 @@
   if(header){const holder=document.createElement("span");holder.style.cssText="float:right;margin-left:14px";holder.append(select);header.append(holder)}
   let current="en";try{current=localStorage.getItem("nlo-language")||"en"}catch{}
   if(!langs[current])current="en";
+  let observer=null;
   function set(id,value,html=false){const el=document.getElementById(id);if(el){if(html)el.innerHTML=value;else el.textContent=value}}
   function translate(code){
     current=langs[code]?code:"en";
@@ -137,7 +138,8 @@
     set("privacyDetail",d.privacyDetail);
     const back=document.querySelector("header a[href='index.html']:not(.brand)");if(back)back.textContent=d.back;
     const foot=document.querySelector("footer a");if(foot)foot.textContent=d.footer;
-    const observer=new MutationObserver(records=>records.forEach(record=>{
+    if(observer)observer.disconnect();
+    observer=new MutationObserver(records=>records.forEach(record=>{
       const target=record.target.nodeType===Node.TEXT_NODE?record.target.parentElement:record.target;
       if(!target)return;
       const id=target.id;
