@@ -18,7 +18,16 @@ de:{title:"Teilnehmerkarte<br><span class=\"grad\">und Samen der Harmonie.</span
 };
 function apply(l){current=langs[l]?l:"en";try{localStorage.setItem("nlo-language",current)}catch{}lang.value=current;document.documentElement.lang=current;
 if(current==="pl")return;
-if(isHumanity){const d=H[current]||H.en;put(".humanity-kicker",d.k);put(".humanity-hero h1",d.h,true);put(".humanity-lead",d.lead);put(".humanity-hero .button-primary",d.heroBtn);put(".humanity-hero .text-link",d.heroLink);
+if(isHumanity){const d=H[current]||H.en;
+const ui={
+en:{nav:["Idea","Research question","Pilot","Cooperation"],foot:["Principles","AAIF #11"],top:"Back to top ↑",title:"Humanity — NEURO LEAGUE OPEN"},
+it:{nav:["Idea","Domanda di ricerca","Progetto pilota","Collaborazione"],foot:["Principi","AAIF #11"],top:"Torna all’inizio ↑",title:"Umanità — NEURO LEAGUE OPEN"},
+de:{nav:["Idee","Forschungsfrage","Pilotprojekt","Zusammenarbeit"],foot:["Grundsätze","AAIF #11"],top:"Nach oben ↑",title:"Menschheit — NEURO LEAGUE OPEN"}
+}[current]||{nav:["Idea","Research question","Pilot","Cooperation"],foot:["Principles","AAIF #11"],top:"Back to top ↑",title:"Humanity — NEURO LEAGUE OPEN"};
+document.title=ui.title;document.querySelectorAll("header nav a").forEach((a,i)=>{if(ui.nav[i])a.textContent=ui.nav[i]});
+document.querySelectorAll(".footer-links a").forEach((a,i)=>{if(ui.foot[i])a.textContent=ui.foot[i]});
+const topLink=document.querySelector(".footer-bottom a");if(topLink)topLink.textContent=ui.top;
+put(".humanity-kicker",d.k);put(".humanity-hero h1",d.h,true);put(".humanity-lead",d.lead);put(".humanity-hero .button-primary",d.heroBtn);put(".humanity-hero .text-link",d.heroLink);
 const sections=[["#pytanie .section-kicker",d.q],["#pytanie h2",d.qh],["#pytanie .section-heading p",d.qp],["#pilot .section-kicker",d.pilot],["#pilot h2",d.ph],["#pilot .section-heading p",d.pp],["#wspolpraca .section-kicker",d.collab],["#wspolpraca h2",d.ch],["#wspolpraca .section-heading p",d.cp]];sections.forEach(x=>put(x[0],x[1],x[0].includes("h2")));
 document.querySelectorAll("#pytanie .humanity-card").forEach((e,i)=>{const a=d.cards[i];if(a){putEl(e.querySelector(".num"),a[0]);putEl(e.querySelector("h3"),a[1]);putEl(e.querySelector("p"),a[2])}});
 document.querySelectorAll("#pilot .humanity-step").forEach((e,i)=>{const a=d.steps[i];if(a){putEl(e.querySelector("h3"),a[0]);putEl(e.querySelector("p"),a[1])}});
