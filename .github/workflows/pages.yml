@@ -24,13 +24,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # This action must run before uploading/deploying. Do not set enablement: true:
+      # the repository's GITHUB_TOKEN was denied permission to create the Pages site.
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
+      - name: Prepare and validate site
+        run: |
+          set -euo pipefail
+          test -f index.html
+          mkdir -p _site
+          cp index.html styles.css app.js i18n.js humanity.html AI_PARTICIPATION.md _site/
+          test -s _site/index.html
+          test -s _site/styles.css
+          test -s _site/app.js
+          test -s _site/i18n.js
+          echo "Prepared static website files in _site/"
+          find _site -maxdepth 1 -type f -printf '%f\n' | sort
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy
         id: deployment
