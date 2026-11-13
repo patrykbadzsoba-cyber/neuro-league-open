@@ -33,7 +33,7 @@ export default {
   const url=new URL(request.url), origin=request.headers.get("origin")||"";
   const headers=cors(origin,env);
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers});
-  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN AI"},{headers});
+  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,geminiConfigured:!!env.GEMINI_API_KEY},{headers});
   if(url.pathname==="/api/chat" && request.method==="POST"){
     if(!env.OPENAI_API_KEY) return Response.json({error:"OPENAI_API_KEY is not configured"},{status:503,headers});
     try{
