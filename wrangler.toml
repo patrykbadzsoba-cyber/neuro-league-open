@@ -1,0 +1,15 @@
+name = "neuro-league-open-api"
+main = "worker.js"
+compatibility_date = "2026-11-13"
+
+[vars]
+OPENAI_MODEL = "gpt-4.1-mini"
+ALLOWED_ORIGIN = "https://patrykbadzsoba-cyber.github.io"
+
+[[durable_objects.bindings]]
+name = "NEURO_BUS"
+class_name = "NeuroBus"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["NeuroBus"]
