@@ -45,7 +45,7 @@ $("research-form").addEventListener("submit",async e=>{
     for(const item of d.results){
       const el=document.createElement("div");el.className="item";
       const a=document.createElement("a");a.textContent=item.title;
-      if(/^https?:\\/\\//i.test(item.url||"")){a.href=item.url;a.target="_blank";a.rel="noopener noreferrer";}else{a.removeAttribute("href");}
+      if(/^https?:\/\//i.test(item.url||"")){a.href=item.url;a.target="_blank";a.rel="noopener noreferrer";}else{a.removeAttribute("href");}
       const meta=document.createElement("div");meta.className="muted";meta.textContent=[item.author,item.publishedDate?new Date(item.publishedDate).toLocaleDateString("pl-PL"):null].filter(Boolean).join(" · ");
       el.append(a,meta);
       const snippet=document.createElement("div");snippet.className="muted";snippet.textContent=(item.highlights||[]).join(" ").slice(0,900)||item.summary||"";
