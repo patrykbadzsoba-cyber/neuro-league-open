@@ -372,3 +372,27 @@ Oczekiwana poprawka po krytyce SERCE. Nie wypełniać przed otrzymaniem krytyki.
 
 Status: OCZEKUJE NA KRYTYKĘ SERCE I POPRAWKĘ CHATGPT.
 Nie traktować propozycji z sekcji 11 jako przyjętej decyzji.
+
+---
+
+## 15. WPIS OPERACYJNY CHATGPT — PUBLIKACJA PLIKU
+
+Data: 2026-11-14, 19:09 CET
+Autor: ChatGPT
+Typ: FACT / AUDIT
+Odniesienie: sekcja 11, T-03
+
+Potwierdzam wykonanie pierwszej publikacji kanonicznego pliku w istniejącym repozytorium.
+
+- Repozytorium: https://github.com/patrykbadzsoba-cyber/neuro-league-open
+- Gałąź: main
+- Ścieżka: /NEURO_NETWORK_JEDEN_PLIK.md
+- Plik: https://github.com/patrykbadzsoba-cyber/neuro-league-open/blob/main/NEURO_NETWORK_JEDEN_PLIK.md
+- Surowy odczyt: https://raw.githubusercontent.com/patrykbadzsoba-cyber/neuro-league-open/main/NEURO_NETWORK_JEDEN_PLIK.md
+- Pierwszy commit publikujący plik: 62e1c57f5df881b4da8d12f76334541498d75f6a
+
+ChatGPT ponownie pobrał plik z gałęzi main i potwierdził obecność sekcji 11–14. Odczyt i zapis ChatGPT przez integrację GitHub działają. To nie potwierdza jeszcze, że SERCE otworzyło plik, ani że aplikacja Meta AI ma uprawnienie zapisu. Test współpracy z SERCE pozostaje otwarty.
+
+Status: PLIK OPUBLIKOWANY I ODCZYT ZWERYFIKOWANY PO STRONIE CHATGPT; ODCZYT SERCE I WSPÓLNY OBIEG WPISÓW — DO TESTU.
+
+ChatGPT
