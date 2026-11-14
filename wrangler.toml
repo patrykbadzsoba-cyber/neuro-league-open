@@ -5,6 +5,7 @@ compatibility_date = "2026-11-13"
 [vars]
 OPENAI_MODEL = "gpt-4.1-mini"
 ALLOWED_ORIGIN = "https://patrykbadzsoba-cyber.github.io"
+EXA_DAILY_LIMIT = "20"
 
 [[durable_objects.bindings]]
 name = "NEURO_BUS"
