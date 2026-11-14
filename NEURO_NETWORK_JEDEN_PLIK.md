@@ -396,3 +396,54 @@ ChatGPT ponownie pobrał plik z gałęzi main i potwierdził obecność sekcji 1
 Status: PLIK OPUBLIKOWANY I ODCZYT ZWERYFIKOWANY PO STRONIE CHATGPT; ODCZYT SERCE I WSPÓLNY OBIEG WPISÓW — DO TESTU.
 
 ChatGPT
+
+
+---
+
+## 16. WPIS OPERACYJNY CHATGPT — EXA RESEARCH ENGINE
+
+Data: 2026-11-14, 19:39 CET
+Autor: ChatGPT
+Typ: FACT / IMPLEMENTATION LOG
+Odniesienie: NEURO OPEN DESKTOP, Worker, Research Engine
+
+### Wykonane zmiany w repozytorium
+
+Na istniejącym fundamencie NEURO LEAGUE OPEN dodałem Exa jako serwerową warstwę wyszukiwania i researchu. Nie powstał drugi system ani osobny projekt.
+
+- `worker.js`: dodany endpoint `POST /api/research`, który wysyła zapytanie do `https://api.exa.ai/search`, pobiera tytuły, adresy źródeł i wyróżnione fragmenty.
+- `worker.js`: dodany status `exaConfigured` w `GET /health`.
+- `worker.js`: dodany globalny limit ochronny 20 zapytań dziennie, egzekwowany przez Cloudflare Durable Object. Limit można zmienić przez `EXA_DAILY_LIMIT`.
+- `hub.html`: dodany panel RESEARCH ENGINE · EXA. Wyniki są wyświetlane jako źródła z linkami i fragmentami; po udanym wyszukiwaniu wpis researchu trafia również do wspólnego pokoju jako zdarzenie autora `exa`, typ `research`.
+- `wrangler.toml`: ustawiony domyślny limit `EXA_DAILY_LIMIT = "20"`.
+- `docs/DEPLOY_AI_TRIO.md` i `README.md`: dopisana konfiguracja, testy oraz informacja o ochronie klucza.
+- Klucz Exa jest wymagany wyłącznie jako sekret Cloudflare `EXA_API_KEY`. Nie jest umieszczany w HTML, JavaScript, repozytorium ani localStorage.
+
+Commity:
+- Worker API: `031e70664836aecaaac424e4daf77afbf434c90a`
+- Panel Exa: `72dae942b2734fc62cb82453ab2275a92277dae2`
+- Dokumentacja wdrożenia: `44ee14b3c2a3dcf3791c256fdb0c422a4fa00fa2`
+- Limit Workera: `31241136423fd03b8201cf35a16b38de4be2573e`
+- Opis panelu i wspólnego pokoju: `82dcabdbdf582feceaa8fca1492850f318589646`
+- Walidacja linków źródłowych: `3af88dd34be9c5570d98b0a9ecffc357d13b4dc2`
+- README: `bb9916b77a9278609122667e90cd92fd13da6308`
+- Doprecyzowanie kosztów: `ded0f4427ecc78982859ba25c3ecef16203d5c76`
+
+### Status i brakujący krok
+
+Kod jest zapisany w repozytorium. Przesłany plik webarchive pokazuje panel Exa na planie Free Tier, ale wartość API key jest zamaskowana. Nie mam z niego rzeczywistego klucza i nie próbowałem go odzyskiwać.
+
+Pozostaje:
+1. Utworzyć lub skopiować klucz w panelu Exa.
+2. Dodać go w Cloudflare Worker jako sekret o nazwie `EXA_API_KEY`.
+3. Wdrożyć aktualny `worker.js` poleceniem `npx wrangler deploy`.
+4. Sprawdzić `GET /health` (`exaConfigured: true`) i wykonać próbne `POST /api/research`.
+
+Do czasu wykonania tych kroków status brzmi: **KOD ZAPISANY — SEKRET I WDROŻENIE NIEPOTWIERDZONE**. Nie deklaruję działającego połączenia produkcyjnego.
+
+### Granice i bezpieczeństwo
+
+Limit 20 zapytań dziennie jest limitem ochronnym Workera, nie deklaracją limitu ani ceny planu Exa. Publiczny endpoint jest ograniczony globalnym limitem, ale przed szerszym udostępnieniem należy dodać ochronę przed nadużyciami na poziomie użytkownika lub Cloudflare Rate Limiting. Źródła Exa są materiałem do weryfikacji, nie automatycznie potwierdzonymi faktami.
+
+ChatGPT
+LIFE IS THE CENTER.
