@@ -27,6 +27,10 @@ Open index.html in a browser or serve the repository root with a static HTTP ser
 - The project will provide short, readable privacy information before any future feature collects or processes personal data. Legal transparency will not be hidden behind dark patterns or unnecessary jargon.
 - The current language packs translate the primary navigation and key landing-page sections; a complete translation of every page element and additional languages remains an ongoing task.
 
+## Research Engine — Exa
+
+The NEURO OPEN DESKTOP includes a server-side Exa search endpoint and a research panel. The Exa key is stored only as the Cloudflare Worker secret `EXA_API_KEY`; it is never sent to the browser. The Worker applies a configurable daily request cap (default: 20) and returns source URLs with relevant highlights. See [the deployment guide](docs/DEPLOY_AI_TRIO.md) for setup and verification.
+
 ## AI collaboration and quantum experiments
 
 - [AI + Quantum Bridge v0.1](docs/AI_QUANTUM_BRIDGE_v0.1.md): architecture for independent AI participants and reproducible quantum experiments.
