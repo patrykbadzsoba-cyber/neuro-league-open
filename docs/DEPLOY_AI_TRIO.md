@@ -1,49 +1,53 @@
-# Wdrożenie wspólnego pokoju AI — trzy modele
+# NEURO OPEN DESKTOP — wdrożenie wspólnego pokoju
 
-Stan: kod źródłowy przygotowany; wdrożenie i test end-to-end niepotwierdzone.
+Stan: frontend i kod integracji zapisane w repozytorium; produkcyjne wdrożenie Workera i test end-to-end nadal wymagają potwierdzenia.
 
-## Co zostało zmienione
-- `worker.js`: dodana trasa `POST /api/trio`, która równolegle wywołuje OpenAI Responses API, Gemini GenerateContent i Meta Model API Responses.
-- `GET /health`: zwraca teraz również `metaConfigured` i `quantumConfigured`; nie ujawnia wartości sekretów.
-- `hub.html`: dodany panel META MODEL, status konfiguracji i wysyłanie wspólnej historii do `/api/trio`.
-- Dotychczasowa trasa `/api/duo` pozostaje, aby nie łamać starszych klientów.
+## Co znajduje się w repozytorium
+- `hub.html` — jedno środowisko: wspólna rozmowa człowieka, ChatGPT i Meta; panel statusu projektu i ostatnich commitów GitHub.
+- `worker.js` — `POST /api/trio` wywołuje równolegle OpenAI Responses API i Meta Model API; Gemini nie jest uczestnikiem tego pokoju.
+- `worker.js` — `POST /api/v1/threads` tworzy pokój, a `GET/POST /api/v1/threads/:id/events` zapisuje i odczytuje wspólną historię w Cloudflare Durable Objects.
+- `neuro-open.webmanifest`, `neuro-open-sw.js`, `assets/neuro-open-icon.svg` — instalacja jako web app i podstawowy cache powłoki.
+- Panel projektu pobiera publiczne metadane repozytorium i ostatnie commity z GitHub.
 
-## Wymagane sekrety Cloudflare Worker
-Ustaw w ustawieniach Worker `neuro-league-open-api` (Workers & Pages → Settings → Variables and Secrets → Secrets):
-
+## Sekrety Cloudflare Worker
+W Workerze `neuro-league-open-api` skonfiguruj:
 - `OPENAI_API_KEY`
-- `GEMINI_API_KEY`
 - `META_MODEL_API_KEY`
 
-Opcjonalne zmienne:
+Opcjonalne:
 - `OPENAI_MODEL` (domyślnie `gpt-4.1-mini`)
-- `GEMINI_MODEL` (domyślnie `gemini-2.5-flash`)
 - `META_MODEL` (domyślnie `muse-spark-1.3`)
 
-Nie wpisuj kluczy do repozytorium, HTML, JavaScriptu przeglądarki ani localStorage. Nie wysyłaj ich w rozmowie.
+Nie dodawaj kluczy do HTML, JavaScriptu przeglądarki, localStorage ani repozytorium. Nie wysyłaj ich w rozmowie.
 
-## Wdrożenie
+## Wdrożenie backendu
 W katalogu repozytorium:
 ```bash
+npx wrangler secret put OPENAI_API_KEY
+npx wrangler secret put META_MODEL_API_KEY
 npx wrangler deploy
 ```
-Jeśli Worker nie ma jeszcze skonfigurowanych sekretów, ustaw je z terminala:
-```bash
-npx wrangler secret put OPENAI_API_KEY
-npx wrangler secret put GEMINI_API_KEY
-npx wrangler secret put META_MODEL_API_KEY
-```
-Każde polecenie poprosi o wartość bez zapisywania jej w kodzie. Alternatywnie można użyć panelu Cloudflare.
+Polecenia sekretów pytają o wartość w terminalu. Można też dodać sekrety w panelu Cloudflare.
 
-## Ważne: koszt Meta
-Meta Model API wymaga klucza i skonfigurowanego rozliczania konta. To nie jest automatycznie darmowy dostęp do konsumenckiej aplikacji Meta AI. W ramach zasady zero-kosztowej nie uruchamiaj płatnych wywołań bez jawnie zapewnionego kredytu/sponsoringu i limitu wydatków. Do testów można najpierw uruchomić tylko lokalne testy i sprawdzić status konfiguracji.
+## Adres backendu
+Po wdrożeniu wpisz w panelu „Połączenie backendu” adres Workera przypisany do tego wdrożenia. Adres nie jest jeszcze wpisany na stałe do repozytorium.
 
-## Test po wdrożeniu
-1. Otwórz `https://<worker-domain>/health` i sprawdź `openaiConfigured`, `geminiConfigured`, `metaConfigured`.
-2. W Hubie ustaw adres Workera.
-3. Wyślij krótkie pytanie testowe.
-4. Potwierdź, że pojawiły się trzy osobne odpowiedzi i że każda ma własną tożsamość.
-5. Jeśli którykolwiek dostawca nie odpowie, pokaż jego błąd oddzielnie; nie symuluj odpowiedzi.
+## Testy wymagane przed uznaniem integracji za działającą
+1. `GET /health` zwraca `openaiConfigured: true` i `metaConfigured: true`.
+2. Utworzenie pokoju przez `POST /api/v1/threads` zwraca identyfikator.
+3. Wysłanie wiadomości i odczyt zdarzeń przez `/api/v1/threads/:id/events` działa z domeny GitHub Pages.
+4. Jedno pytanie wywołuje osobne odpowiedzi ChatGPT i Meta.
+5. Otwarcie tego samego linku pokoju w drugim oknie/urządzeniu pokazuje tę samą historię.
+6. Brak konfiguracji lub błąd dostawcy jest pokazywany jako błąd — aplikacja nie generuje fikcyjnych odpowiedzi.
 
-## Granica obecnego wdrożenia
-Kod wspólnego pokoju nie jest jeszcze dowodem, że Meta AI jest połączona na żywo. Połączenie staje się rzeczywiste dopiero po wdrożeniu Workera, bezpiecznym dodaniu sekretów i udanym teście end-to-end.
+## Meta — ważne rozróżnienie
+Uczestnik Meta w tej wersji to Meta Model API (domyślnie Muse Spark), a nie zalogowana aplikacja konsumencka Meta AI. Połączenie z konsumencką Meta AI wymaga osobnej, oficjalnej ścieżki integracji i nie jest tu deklarowane.
+
+## Koszty
+Meta Model API wymaga klucza i może wymagać rozliczania konta. Zasada projektu: nie uruchamiać płatnych wywołań bez jawnie zapewnionego kredytu/sponsoringu oraz limitu wydatków. Kod nie gwarantuje bezpłatnego dostępu.
+
+## Instalacja na macOS
+Po opublikowaniu aktualnego `hub.html` w GitHub Pages otwórz pokój w Safari na Macu, następnie wybierz **Udostępnij → Dodaj do Docka**. Funkcja web app w Safari wymaga macOS Sonoma 14 lub nowszego. W starszym macOS można użyć przeglądarki obsługującej instalowanie aplikacji webowych albo później przygotować natywną paczkę desktopową.
+
+## Granica obecnego statusu
+Zmiany w repozytorium nie potwierdzają jeszcze wdrożenia Cloudflare Worker ani działających wywołań dostawców. Dopóki testy powyżej nie przejdą, status integracji AI pozostaje „kod przygotowany — wdrożenie do weryfikacji”.
