@@ -1,0 +1,20 @@
+{
+  "id": "/neuro-league-open/hub.html",
+  "name": "NEURO OPEN DESKTOP",
+  "short_name": "NEURO OPEN",
+  "description": "Wspólne środowisko pracy człowieka, ChatGPT i Meta.",
+  "start_url": "./hub.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#07080f",
+  "theme_color": "#07080f",
+  "lang": "pl",
+  "icons": [
+    {
+      "src": "./assets/neuro-open-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
