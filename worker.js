@@ -2,10 +2,18 @@ export class NeuroBus {
   constructor(state) { this.state = state; }
   async fetch(request) {
     const url = new URL(request.url);
+    if (url.pathname === '/quota' && request.method === 'POST') {
+      let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+      const limit = Math.max(1, Math.min(1000, Number(body.limit) || 20));
+      const count = await this.state.storage.get('exa_daily_count') || 0;
+      if (count >= limit) return Response.json({error:'Daily Exa request limit reached',count,limit},{status:429});
+      await this.state.storage.put('exa_daily_count', count + 1);
+      return Response.json({ok:true,count:count+1,limit});
+    }
     if (url.pathname.endsWith('/events')) {
       if (request.method === 'POST') {
         let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
-        const allowedTypes = ['message','proposal','critique','revision','decision','experiment_spec','experiment_result','system'];
+        const allowedTypes = ['message','proposal','critique','revision','decision','experiment_spec','experiment_result','research','system'];
         if (!body || !allowedTypes.includes(body.type) || typeof body.author !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(body.author) || typeof body.content !== 'string' || !body.content.trim() || body.content.length > 16000) return Response.json({error:'Invalid event payload'},{status:400});
         const count = await this.state.storage.get('event_count') || 0;
         if (count >= 1000) return Response.json({error:'Thread event limit reached (1000)'},{status:409});
@@ -52,7 +60,7 @@ export default {
   const url=new URL(request.url), origin=request.headers.get("origin")||"";
   const headers=cors(origin,env);
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers});
-  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,metaConfigured:!!env.META_MODEL_API_KEY,quantumConfigured:!!env.IBM_QUANTUM_TOKEN},{headers});
+  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,metaConfigured:!!env.META_MODEL_API_KEY,exaConfigured:!!env.EXA_API_KEY,exaDailyLimit:Number(env.EXA_DAILY_LIMIT||20),quantumConfigured:!!env.IBM_QUANTUM_TOKEN},{headers});
   if(url.pathname==="/api/v1/threads" && request.method==="POST"){
     const threadId=crypto.randomUUID();
     return Response.json({threadId,eventsUrl:"/api/v1/threads/"+threadId+"/events"},{status:201,headers});
@@ -65,6 +73,46 @@ export default {
     const upstream=await env.NEURO_BUS.get(id).fetch(new Request(target.toString(),request));
     const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
     return new Response(upstream.body,{status:upstream.status,statusText:upstream.statusText,headers:outHeaders});
+  }
+  if(url.pathname==="/api/research" && request.method==="POST"){
+    if(!env.EXA_API_KEY) return Response.json({error:"EXA_API_KEY is not configured in the Cloudflare Worker."},{status:503,headers});
+    try {
+      const body=await request.json();
+      const query=typeof body.query==="string"?body.query.trim():"";
+      if(query.length<4 || query.length>800) return Response.json({error:"Query must contain 4–800 characters."},{status:400,headers});
+      const numResults=Math.max(1,Math.min(6,Number(body.numResults)||5));
+      const day=new Date().toISOString().slice(0,10);
+      const dailyLimit=Math.max(1,Math.min(1000,Number(env.EXA_DAILY_LIMIT)||20));
+      const quotaId=env.NEURO_BUS.idFromName("exa-quota:"+day);
+      const quotaResponse=await env.NEURO_BUS.get(quotaId).fetch("https://neuro-bus/quota",{
+        method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({limit:dailyLimit})
+      });
+      const quota=await quotaResponse.json();
+      if(!quotaResponse.ok) return Response.json({error:quota.error||"Daily research limit reached",quota},{status:429,headers});
+      const upstream=await fetch("https://api.exa.ai/search",{
+        method:"POST",
+        headers:{"x-api-key":env.EXA_API_KEY,"content-type":"application/json"},
+        body:JSON.stringify({
+          query,
+          type:"auto",
+          numResults,
+          contents:{highlights:{query,maxCharacters:1800}}
+        })
+      });
+      const data=await upstream.json().catch(()=>({}));
+      if(!upstream.ok) return Response.json({error:data.error?.message||data.message||"Exa search request failed",quota},{status:502,headers});
+      const results=(Array.isArray(data.results)?data.results:[]).slice(0,numResults).map(item=>({
+        title:typeof item.title==="string"?item.title:"Untitled source",
+        url:typeof item.url==="string"?item.url:"",
+        publishedDate:item.publishedDate||null,
+        author:item.author||null,
+        highlights:Array.isArray(item.highlights)?item.highlights.slice(0,3):[],
+        summary:typeof item.summary==="string"?item.summary:null
+      }));
+      return Response.json({ok:true,requestId:data.requestId||null,results,quota:{used:quota.count,limit:quota.limit},costDollars:data.costDollars||null},{headers});
+    } catch(e) {
+      return Response.json({error:e.message||"Research request failed"},{status:400,headers});
+    }
   }
   if(url.pathname==="/api/chat" && request.method==="POST"){
     if(!env.OPENAI_API_KEY) return Response.json({error:"OPENAI_API_KEY is not configured"},{status:503,headers});
