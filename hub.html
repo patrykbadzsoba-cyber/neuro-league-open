@@ -23,7 +23,7 @@
 const $=id=>document.getElementById(id),STORE="neuro-open-room-v1",END="neuro-open-endpoint-v1",REPO="patrykbadzsoba-cyber/neuro-league-open";let endpoint=localStorage.getItem(END)||"",events=[],threadId=new URLSearchParams(location.search).get("room")||localStorage.getItem(STORE)||"",busy=false,installPrompt=null;
 $("endpoint").value=endpoint;
 function esc(s){return String(s??"")}
-function draw(){const box=$("conversation");box.innerHTML="";if(!events.length){box.innerHTML='<div class="empty">Wspólna rozmowa pojawi się tutaj.<br>Wpisz wiadomość poniżej, aby rozpocząć.</div>';return;}for(const e of events){const el=document.createElement("article");const who=e.author==="human"?"TY":e.author==="chatgpt"?"CHATGPT":e.author==="meta"?"META · MUSE SPARK":String(e.author||"UCZESTNIK").toUpperCase();el.className="msg "+(e.author==="human"?"humanmsg":"ai");const head=document.createElement("div");head.className="msghead";head.textContent=who+" · "+new Date(e.createdAt||Date.now()).toLocaleString("pl-PL");const body=document.createElement("div");body.className="msgbody";body.textContent=e.content||"";el.append(head,body);box.append(el);}box.scrollTop=box.scrollHeight;}
+function draw(){const box=$("conversation");box.innerHTML="";if(!events.length){box.innerHTML='<div class="empty">Wspólna rozmowa pojawi się tutaj.<br>Wpisz wiadomość poniżej, aby rozpocząć.</div>';return;}for(const e of events){const el=document.createElement("article");const who=e.author==="human"?"TY":e.author==="chatgpt"?"CHATGPT":e.author==="meta"?"META · MUSE SPARK":e.author==="exa"?"EXA · RESEARCH":String(e.author||"UCZESTNIK").toUpperCase();el.className="msg "+(e.author==="human"?"humanmsg":"ai");const head=document.createElement("div");head.className="msghead";head.textContent=who+" · "+new Date(e.createdAt||Date.now()).toLocaleString("pl-PL");const body=document.createElement("div");body.className="msgbody";body.textContent=e.content||"";el.append(head,body);box.append(el);}box.scrollTop=box.scrollHeight;}
 function setStatus(t,ok=false){$("connection").textContent=t;$("connection").style.color=ok?"var(--green)":"var(--muted)";}
 async function call(path,opts={}){if(!endpoint)throw Error("Najpierw ustaw adres backendu.");const r=await fetch(endpoint+path,opts);const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||("HTTP "+r.status));return d;}
 async function ensureRoom(){if(threadId)return threadId;const d=await call("/api/v1/threads",{method:"POST"});threadId=d.threadId;localStorage.setItem(STORE,threadId);$("roomstatus").textContent="Pokój wspólny · "+threadId.slice(0,8);return threadId;}
@@ -44,13 +44,23 @@ $("research-form").addEventListener("submit",async e=>{
     if(!d.results.length){box.textContent="Brak wyników dla tego zapytania.";return;}
     for(const item of d.results){
       const el=document.createElement("div");el.className="item";
-      const a=document.createElement("a");a.href=item.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=item.title;
+      const a=document.createElement("a");a.textContent=item.title;
+      if(/^https?:\\/\\//i.test(item.url||"")){a.href=item.url;a.target="_blank";a.rel="noopener noreferrer";}else{a.removeAttribute("href");}
       const meta=document.createElement("div");meta.className="muted";meta.textContent=[item.author,item.publishedDate?new Date(item.publishedDate).toLocaleDateString("pl-PL"):null].filter(Boolean).join(" · ");
       el.append(a,meta);
       const snippet=document.createElement("div");snippet.className="muted";snippet.textContent=(item.highlights||[]).join(" ").slice(0,900)||item.summary||"";
       if(snippet.textContent)el.append(snippet);
       box.append(el);
     }
+    await ensureRoom();
+    const sharedResearch=d.results.map((item,i)=>[
+      (i+1)+". "+item.title,
+      item.url,
+      ...(item.highlights||[]).slice(0,2)
+    ].filter(Boolean).join("\n")).join("\n\n").slice(0,14000);
+    await addEvent("exa","EXA RESEARCH — "+query+"\n\n"+sharedResearch,"research");
+    await sync();
+    status.textContent+=" · źródła dodane do wspólnego pokoju";
   }catch(err){status.textContent="Research niedostępny: "+err.message;}
   finally{btn.disabled=false;}
 });
