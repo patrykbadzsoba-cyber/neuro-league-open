@@ -6,6 +6,8 @@ Stan: frontend i kod integracji zapisane w repozytorium; produkcyjne wdrożenie 
 - `hub.html` — jedno środowisko: wspólna rozmowa człowieka, ChatGPT i Meta; panel statusu projektu i ostatnich commitów GitHub.
 - `worker.js` — `POST /api/trio` wywołuje równolegle OpenAI Responses API i Meta Model API; Gemini nie jest uczestnikiem tego pokoju.
 - `worker.js` — `POST /api/v1/threads` tworzy pokój, a `GET/POST /api/v1/threads/:id/events` zapisuje i odczytuje wspólną historię w Cloudflare Durable Objects.
+- `worker.js` — `POST /api/research` wykonuje wyszukiwanie Exa po stronie serwera; klucz pozostaje w sekrecie Cloudflare.
+- `hub.html` — panel RESEARCH ENGINE · EXA pokazuje tytuły, linki i wyróżnione fragmenty źródeł.
 - `neuro-open.webmanifest`, `neuro-open-sw.js`, `assets/neuro-open-icon.svg` — instalacja jako web app i podstawowy cache powłoki.
 - Panel projektu pobiera publiczne metadane repozytorium i ostatnie commity z GitHub.
 
