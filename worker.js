@@ -62,7 +62,9 @@ export default {
     const threadId=threadMatch[1];
     const id=env.NEURO_BUS.idFromName("thread:"+threadId);
     const target=new URL(request.url); target.pathname="/events"; target.searchParams.set("threadId",threadId);
-    return env.NEURO_BUS.get(id).fetch(new Request(target.toString(),request));
+    const upstream=await env.NEURO_BUS.get(id).fetch(new Request(target.toString(),request));
+    const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
+    return new Response(upstream.body,{status:upstream.status,statusText:upstream.statusText,headers:outHeaders});
   }
   if(url.pathname==="/api/chat" && request.method==="POST"){
     if(!env.OPENAI_API_KEY) return Response.json({error:"OPENAI_API_KEY is not configured"},{status:503,headers});
