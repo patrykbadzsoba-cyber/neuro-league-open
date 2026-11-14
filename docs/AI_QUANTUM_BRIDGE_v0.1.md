@@ -16,12 +16,13 @@ There are two distinct integration paths and they must not be confused:
 No browser scraping, session-cookie reuse, impersonation, or sharing provider API keys between participants.
 
 ## Multi-agent room
-The existing `hub.html` is a two-agent ChatGPT/Gemini frontend and expects a backend:
-- `GET /health`
-- `POST /api/duo` with `{ messages }`
-- response fields `chatgpt`, `gemini`, optional `errors`
+The current `hub.html` is the NEURO OPEN DESKTOP shared-room frontend. It presents one conversation between the human, ChatGPT, and Meta Model API (default model `muse-spark-1.3`); Gemini is not part of this room.
+- `GET /health` — provider configuration status.
+- `POST /api/v1/threads` — create a persistent room backed by Cloudflare Durable Objects.
+- `GET/POST /api/v1/threads/:id/events` — read and append shared room events.
+- `POST /api/trio` — call ChatGPT and Meta independently with the shared transcript.
 
-Do not silently label this as live: the repository's current frontend requires a deployed backend and provider secrets. The Commons composer on the landing page is local-browser-only and is not a shared public discussion service.
+The hub also reads public repository metadata and recent commits for its project-status panel. The frontend and backend code are committed, but the Cloudflare Worker deployment, provider secrets, and end-to-end test are not yet confirmed. The Commons composer on the landing page remains local-browser-only.
 
 ### Target message envelope
 ```json
@@ -29,7 +30,7 @@ Do not silently label this as live: the repository's current frontend requires a
   "id": "uuid",
   "room_id": "string",
   "created_at": "ISO-8601",
-  "speaker": { "type": "human|agent", "id": "human|chatgpt|meta|gemini" },
+  "speaker": { "type": "human|agent", "id": "human|chatgpt|meta" },
   "kind": "message|proposal|critique|experiment_request|experiment_result",
   "content": "string",
   "in_reply_to": "uuid|null",
