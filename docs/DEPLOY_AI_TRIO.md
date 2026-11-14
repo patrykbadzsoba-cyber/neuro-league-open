@@ -51,7 +51,7 @@ Po wdrożeniu wpisz w panelu „Połączenie backendu” adres Workera przypisan
 Uczestnik Meta w tej wersji to Meta Model API (domyślnie Muse Spark), a nie zalogowana aplikacja konsumencka Meta AI. Połączenie z konsumencką Meta AI wymaga osobnej, oficjalnej ścieżki integracji i nie jest tu deklarowane.
 
 ## Koszty
-Meta Model API wymaga klucza i może wymagać rozliczania konta. Zasada projektu: nie uruchamiać płatnych wywołań bez jawnie zapewnionego kredytu/sponsoringu oraz limitu wydatków. Kod nie gwarantuje bezpłatnego dostępu.
+Meta Model API wymaga klucza i może wymagać rozliczania konta. Exa rozlicza użycie według aktualnego planu i rodzaju zapytania; sam napis Free Tier w panelu nie jest gwarancją nieograniczonego ani bezkosztowego użycia. Worker ma ochronny limit 20 zapytań dziennie (konfigurowalny przez `EXA_DAILY_LIMIT`), ale nie jest to limit rozliczeniowy Exa. Zasada projektu: nie uruchamiać płatnych wywołań bez jawnie zapewnionego kredytu/sponsoringu oraz limitu wydatków. Kod nie gwarantuje bezpłatnego dostępu.
 
 ## Instalacja na macOS
 Po opublikowaniu aktualnego `hub.html` w GitHub Pages otwórz pokój w Safari na Macu, następnie wybierz **Udostępnij → Dodaj do Docka**. Funkcja web app w Safari wymaga macOS Sonoma 14 lub nowszego. W starszym macOS można użyć przeglądarki obsługującej instalowanie aplikacji webowych albo później przygotować natywną paczkę desktopową.
