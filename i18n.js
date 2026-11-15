@@ -45,7 +45,7 @@ const footerTop=document.querySelector(".footer-bottom a");if(footerTop&&p.foote
 const footerSupport=document.querySelector(".support-note");if(footerSupport&&p.footerSupport)footerSupport.textContent=p.footerSupport;
 try{localStorage.setItem("nlo-language",lang)}catch{}
 }
-const initial=supported.includes(requested)?requested:(supported.includes(saved)?saved:(supported.includes(browser)?browser:"en"));
+const initial=requested==="ar"?"ar":(saved==="ar"?"ar":(supported.includes(requested)?requested:(supported.includes(saved)?saved:(supported.includes(browser)?browser:"en"))));
 apply(initial);selector.addEventListener("change",()=>apply(selector.value));
 document.querySelectorAll('a[href$=".html"],a[href*=".html#"]').forEach(a=>{a.addEventListener("click",()=>{try{localStorage.setItem("nlo-language",selector.value)}catch{}})});
 })();
