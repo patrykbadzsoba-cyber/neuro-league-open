@@ -1,0 +1,80 @@
+(() => {
+  const selector=document.getElementById("languageSelect");
+  if(!selector)return;
+  const T={
+    nav:["الفكرة","المجالات","الطاقة المركزية","المجتمع المشترك","الصندوق","بطاقة المشارك والبذرة","المبادئ","كيف نتحدث مع الذكاء الاصطناعي ↗","انضم إلى الحوار ↗"],
+    heroK:"مساحة مفتوحة للتعاون",heroH:"ببساطة<br><span class=\"gradient-text\">معًا.</span>",
+    heroP:"مكان يلتقي فيه الناس والأفكار والتكنولوجيا لبناء شيء نافع — بلا إقصاء أو تظاهر أو حواجز.",
+    heroJoin:"انضم إلى الحوار",heroIdea:"اكتشف الفكرة",heroNote:"الإنسان في المركز. والتكنولوجيا أداة.",
+    ticker:"حرية الفكر ✳ كرامة الإنسان ✳ التعاون ✳ التكنولوجيا في خدمة الحياة",
+    showcase:["الرؤية · الإنسان · التعاون · الحياة","كيف يمكن أن تبدو NEURO LEAGUE OPEN في الواقع؟","لا نريد الاكتفاء بالشعارات. نعرض حلولًا مقترحة يمكن للناس تصميمها واختبارها وتقييمها معًا، طوعًا ومن دون مالك واحد للفكرة.",
+      "01 / منظومة مشتركة","الإنسان + الذكاء الاصطناعي + الطبيعة","مساحة مفتوحة يتبادل فيها الناس المعرفة والخبرات. يساعد الذكاء الاصطناعي في تحليل المعلومات وتنظيمها، بينما تبقى القرارات والمسؤولية لدى البشر.","تصوّر مفاهيمي — لا يصوّر منشأة قائمة ومكتملة.",
+      "02 / تبادل الغذاء محليًا","خذ ما تحتاج إليه. واترك ما تستطيع.","مكان يستطيع فيه الجيران مشاركة الطعام الصالح للاستهلاك مجانًا. لا أسعار ولا إلزام بالدفع ولا شرط لتقديم شيء بالمقابل.","هذا نموذج مقترح للنقاش المشترك. وقبل إنشاء نقطة فعلية، يجب وضع قواعد سلامة الغذاء والتخزين والعناية بالمكان.",
+      "03 / إشراك الذكاء الاصطناعي في الحوار","لا تحتاج إلى خبرة في الذكاء الاصطناعي.","يمكنك الحضور بسؤال أو فكرة أو مشكلة. ينبغي للذكاء الاصطناعي أن يساعد على الفهم والترجمة وتنظيم المقترحات والبحث عن المعلومات، لا أن يصدر الأوامر أو يقرر بدلًا من الإنسان.",
+      "الخطوة 01","افتح حوارًا واكتب بكلماتك ما تريد فهمه أو تغييره.","الخطوة 02","اطلب شرحًا أو خيارات للحل أو ترجمة أو التحقق من المصادر.","الخطوة 03","قيّم الإجابة وتحقق من الحقائق المهمة وقرر بنفسك إن كنت تريد اتخاذ إجراء.",
+      "افتح حوارًا مع الذكاء الاصطناعي حول NLO ↗","افتح NEURO OPEN DESKTOP ↗","ملاحظة: يفتح الزر حوارًا خارجيًا في ChatGPT. مساحة النماذج المتعددة نموذج أولي يحتاج إلى الربط والتحقق على الخادم. لا تُدخل كلمات مرور أو بيانات مصرفية أو معلومات خاصة بأشخاص آخرين."],
+    ideaK:"01 / الفكرة",ideaH:"ليست منصة أخرى.<br><span class=\"muted\">طريقة جديدة لنكون معًا.</span>",ideaP:"NEURO LEAGUE OPEN مبادرة مفتوحة. لا يملكها شخص واحد أو شركة أو نظام. يصنع قيمتها أشخاص يساهمون طوعًا بمعرفتهم وخبراتهم وأعمالهم.",
+    areasK:"02 / مجالات العمل",areasH:"مجالات متعددة.<br><span class=\"muted\">اتجاه مشترك.</span>",areasP:"من فهم الإنسان إلى استعادة البيئة. تتطور المجالات بانفتاح، بالاستناد إلى المعرفة والتعاون والعمل القابل للتحقق.",
+    areas:[["NEURAL LINK","بنية مفتوحة للتواصل والتعاون. الإنسان هو المضيف والتكنولوجيا ضيف."],["NEUROHARMONY","علم كيمياء الحياة: الدماغ والعواطف والنوم والتوتر والمرونة العصبية."],["التجديد البيئي","حماية الأنظمة الطبيعية واستعادتها من خلال أعمال محلية."],["المشاع","مساحة مشتركة للحوار وتبادل المعرفة وبدء التعاون."],["التكنولوجيا","أدوات مفتوحة مصممة للاستقلالية والخصوصية وإمكانية الوصول."],["GLOBAL DNB","إيقاع وثقافة ومسؤولية مشتركة تجاه كوكب واحد."],["الإنسانية","تعاون مفتوح لتحسين الوصول إلى الموارد الأساسية مع احترام الاستقلالية والخصوصية."]],
+    commonsK:"03 / المشاع",commonsEy:"مساحة مفتوحة",commonsH:"الحوار هو<br><span class=\"gradient-text\">البداية.</span>",commonsP:"هل لديك سؤال أو فكرة أو تجربة تود مشاركتها؟ ابدأ بالحوار. لا تحتاج إلى حل جاهز أو حساب للتعرف إلى الفكرة.",commonsBtn:"ابدأ من هنا ↗",
+    boardK:"لوحة مفتوحة",boardH:"موضوعات للحوار المشترك",boardP:"أضف سؤالًا أو اقتراحًا. في هذا النموذج الأولي تبقى المشاركات في هذا المتصفح فقط.",boardBtn:"أضف موضوعًا ＋",boardTitle:"عنوان الموضوع",boardTitlePh:"ما الموضوع الذي تريد طرحه؟",boardBody:"المحتوى",boardBodyPh:"اشرح سؤالك أو فكرتك أو اقتراح التعاون.",boardSave:"احفظ مسودة محلية ↗",cancel:"إلغاء",boardDisclaimer:"هذا ليس نشرًا عامًا بعد. لن تُرسل المشاركة إلى خادم ولن تُشارك مع الآخرين.",boardEmpty:"لا توجد مشاركات محلية بعد. يمكنك إعداد المسودة الأولى.",boardNotice:"مهم: تعمل اللوحة حاليًا محليًا على هذا الجهاز. الحسابات والرسائل والمنشورات العامة المشتركة غير مفعّلة بعد؛ لذلك لا نقدّم هذا النموذج على أنه وسيلة اتصال عاملة بين المستخدمين.",
+    rulesK:"04 / المبادئ",rulesH:"مفتوحة من حيث التصميم.<br><span class=\"muted\">ومسؤولة في التطبيق.</span>",rulesP:"يقوم المشروع على استقلالية المشاركين والشفافية وحق المغادرة دون فقدان الهوية أو المساهمات.",rules:["مفتوح للجميع","المشروع ليس ملكًا لأحد","الخصوصية منذ البداية","الحق في المغادرة","قابلية التفرع والتطوير المستقل","الإنسان أولًا"],ruleS:["المشاركة طوعية ولا تميّز بين الناس.","لا يجوز أن يصبح المشروع ملكًا لشخص أو شركة أو ذكاء اصطناعي واحد.","البيانات الشخصية ليست ثمن المشاركة.","يستطيع كل شخص إنهاء مشاركته.","يمكن نسخ الحلول وتطويرها بصورة مستقلة.","حماية الإنسان أهم من سرعة تطوير المشروع."],ruleCta:"افتح الوصف الكامل ↗",
+    aiK:"06 / مشاركة الذكاء الاصطناعي",aiEy:"الإنسان + الذكاء الاصطناعي، معًا",aiH:"ذكاء في خدمة <span class=\"gradient-text\">الحياة.</span>",aiP:"ندعو الناس وأنظمة الذكاء الاصطناعي إلى العمل معًا لحماية الكوكب واستعادته. يساعد الذكاء الاصطناعي في تحليل المعرفة والترجمة وتنظيم الأفكار وإعداد الأعمال. وتبقى القرارات والموافقة والمسؤولية بيد الإنسان.",aiBtn:"تحدث مع الذكاء الاصطناعي عن NLO ↗",aiNote:"يفتح حوارًا خارجيًا في ChatGPT. هذه ليست دردشة مدمجة أو صندوق وارد مشتركًا في Commons. لا يرسل هذا الموقع بيانات إلى هناك.",
+    joinK:"05 / انضم",joinH:"ليس عليك أن تكون<br>مستعدًا. <span class=\"gradient-text\">يكفي وجودك.</span>",joinP:"تتكون NEURO LEAGUE OPEN بفضل أشخاص يريدون الحوار والتعاون والعمل بمسؤولية. اكتب بلغتك: ما الذي يعجبك، وما الذي لا يتضح، وما الذي لا يعمل، وما الذي يستحق التغيير. كل ملاحظة محددة تساعد على تحسين المشروع.",
+    contributionH:"ماذا تعني «المساهمة»؟",contributionP:"المساهمة ليست رسومًا. قد تكون فكرة أو معرفة أو خبرة أو ملاحظة أو ترجمة أو وقتًا أو مساعدة عملية طوعية. الدعم المالي خيار منفصل وطوعي تمامًا، وليس شرطًا للمشاركة.",
+    privacyH:"كيف نحمي الخصوصية؟",privacyP:"تُحفظ بطاقة المشارك ومسودات Commons محليًا في هذا المتصفح. يفتح نموذج الاتصال رسالة بريد إلكتروني عادية إلى فريق NEURO LEAGUE OPEN. لا تحتاج إلى حساب GitHub أو معرفة بالبرمجة. يستضيف GitHub Pages الموقع؛ لذلك لا نعد بإخفاء الهوية أو بالتحكم الكامل في السجلات التقنية لمزود الخدمة. لا تُدخل بيانات حساسة.",
+    name:"الاسم أو الاسم المستعار",topic:"الموضوع",message:"الرسالة",messagePh:"اشرح بالتحديد ما لاحظته. ويمكنك ذكر الصفحة أو الموضع الذي ظهرت فيه المشكلة.",send:"افتح رسالة البريد الإلكتروني ↗",free:"المشاركة الأساسية مجانية. الدعم الطوعي ليس شرطًا للوصول.",contactPrivacy:"يفتح الزر تطبيق البريد لديك برسالة معدّة مسبقًا. يمكنك مراجعتها وإرسالها كأي رسالة عادية.",plainPrivacy:"لا تحتاج إلى حساب GitHub أو معرفة تقنية للتواصل معنا.",
+    topicOptions:["ما الذي يعمل جيدًا؟","ما الذي لا يتضح أو لا يعمل؟","ما الذي ينبغي تغييره أو إضافته؟","لدي فكرة أو اقتراح للتعاون"],
+    footer:["المبادئ","عن المشروع","اتصل بنا"],footerBottom:"مبادرة مفتوحة. مسؤولية مشتركة.",footerTop:"العودة إلى الأعلى ↑",footerSupport:"دعم المشروع طوعي. ولا تمنح أي هبة حقوق ملكية أو صلاحيات خاصة.",
+    more:"اقرأ المزيد",readApproach:"اكتشف النهج",joinArea:"ساهم",rulesLink:"مبادئنا",humanityLink:"اكتشف المشروع",
+    details:["NEURAL LINK بنية مفتوحة للتواصل والتعاون. يبقى الإنسان صاحب القرار، والذكاء الاصطناعي أداة وضيف. وتشمل المبادئ الاستقلالية والخصوصية وحق المغادرة والتعاون بلا مالك مركزي.","يدرس NEUROHARMONY الدماغ والجهاز العصبي والعواطف والإدراك والمرونة العصبية والنوم والتوتر وتأثير البيئة والعلاقات الاجتماعية. الهدف هو التثقيف الموثوق والأسئلة البحثية القائمة على العلم.","يعني التجديد حماية النظم البيئية المحلية واستعادتها. نبدأ بالملاحظة والتشخيص وخطة العمل وشفافية الموارد والتحقق المستقل من النتائج.","ينبغي أن يكون Commons مساحة مشتركة للأسئلة والمقترحات والمعرفة والتعاون. اللوحة الحالية نموذج محلي أولي؛ ولا تُنشر المشاركات على خادم.","نطوّر مبادئ الإنسان أولًا والخصوصية منذ التصميم والانفتاح للجميع وحق المغادرة وقابلية التفرع. ينبغي للتكنولوجيا تعزيز الاستقلالية لا أن تحل محل القرار البشري.","يجمع GLOBAL DNB الموسيقى والثقافة والمسؤولية البيئية. تتضمن الفكرة إيقاعًا مشتركًا بسرعة 174 BPM وفعاليات تعمل بالطاقة المتجددة وشعار LIFE IS THE CENTER.","يدرس مجال الإنسانية كيف يمكن للتعاون الطوعي بين الناس والمنظمات وأدوات الذكاء الاصطناعي تحسين الوصول إلى الموارد الأساسية مع احترام الكرامة والخصوصية والاستقلالية."]
+  };
+  const set=(q,v,html=false)=>{const e=document.querySelector(q);if(e){if(html)e.innerHTML=v;else e.textContent=v;}};
+  function apply(){
+    if(selector.value!=="ar")return;
+    const t=T;document.documentElement.lang="ar";document.documentElement.dir="rtl";document.body.classList.add("lang-ar");
+    const nav=[...document.querySelectorAll("#mainNav > a")];t.nav.forEach((v,i)=>{if(nav[i])nav[i].textContent=v;});
+    set(".hero-copy .eyebrow",t.heroK);set(".hero-copy h1",t.heroH,true);set(".hero-lead",t.heroP);set(".hero-actions .button-primary",t.heroJoin);set(".hero-actions .text-link",t.heroIdea);set(".hero-note",t.heroNote);
+    set(".ticker div",t.ticker+" ✳ "+t.ticker);
+    const sh=document.querySelector(".nlo-showcase-head");if(sh){[sh.querySelector(".section-kicker"),sh.querySelector("h2"),sh.querySelector("p")].forEach((e,i)=>{if(e)e.textContent=t.showcase[i];});}
+    document.querySelectorAll(".nlo-vision-card").forEach((c,i)=>{const b=i?7:3;const d=t.showcase;setCard(c,".nlo-vision-tag",d[b]);setCard(c,"h3",d[b+1]);setCard(c,".nlo-vision-copy > p",d[b+2]);setCard(c,".nlo-disclaimer",d[b+3]);});
+    const aiStart=document.querySelector(".nlo-ai-start");if(aiStart){const d=t.showcase;setCard(aiStart,".nlo-vision-tag",d[11]);setCard(aiStart,"h3",d[12]);setCard(aiStart,":scope > p",d[13]);aiStart.querySelectorAll(".nlo-ai-step").forEach((e,i)=>{setCard(e,"b",d[14+i*2]);setCard(e,"span",d[15+i*2]);});const links=aiStart.querySelectorAll(".nlo-ai-links a");if(links[0])links[0].textContent=d[20];if(links[1])links[1].textContent=d[21];setCard(aiStart,".nlo-ai-foot",d[22]);}
+    set("#idea .section-kicker",t.ideaK);set("#idea .section-heading h2",t.ideaH,true);set("#idea .section-heading p",t.ideaP);
+    set("#rozwiazania .section-kicker",t.areasK);set("#rozwiazania .section-heading h2",t.areasH,true);set("#rozwiazania .section-heading p",t.areasP);
+    document.querySelectorAll(".area-card").forEach((c,i)=>{if(t.areas[i]){setCard(c,"h3",t.areas[i][0]);setCard(c,":scope > p",t.areas[i][1]);const d=c.querySelector("details");if(d){setCard(d,"summary",t.more);setCard(d,"p",t.details[i]);}const a=c.querySelector(":scope > a");if(a)a.textContent=i===0||i===3?t.readApproach:(i===4?t.rulesLink:(i===6?t.humanityLink:t.joinArea))+" ↗";}});
+    set("#commons .section-kicker",t.commonsK);set(".commons-panel .eyebrow",t.commonsEy);set(".commons-panel h2",t.commonsH,true);set(".commons-panel > div:first-child > p",t.commonsP);set(".commons-panel .button-primary",t.commonsBtn);
+    const board=document.querySelector(".commons-board");if(board){setCard(board,".section-kicker",t.boardK);setCard(board,"h3",t.boardH);setCard(board,".commons-board-head p",t.boardP);setCard(board,"#openTopicForm",t.boardBtn);const labels=board.querySelectorAll("form label");if(labels[0])labels[0].textContent=t.boardTitle;if(labels[1])labels[1].textContent=t.boardBody;const title=document.getElementById("topicTitle");if(title)title.placeholder=t.boardTitlePh;const body=document.getElementById("topicBody");if(body)body.placeholder=t.boardBodyPh;setCard(board,'button[type="submit"]',t.boardSave);setCard(board,"#cancelTopicForm",t.cancel);setCard(board,".form-disclaimer",t.boardDisclaimer);setCard(board,"#topicEmpty",t.boardEmpty);set("#commons .notice",t.boardNotice);}
+    set("#zasady .section-kicker",t.rulesK);set("#zasady .section-heading h2",t.rulesH,true);set("#zasady .section-heading p",t.rulesP);
+    document.querySelectorAll(".rule-row").forEach((e,i)=>{setCard(e,'[data-rule-title]',t.rules[i]);setCard(e,'[data-rule-summary]',t.ruleS[i]);setCard(e,'[data-rule-cta]',t.ruleCta);e.href=e.href.replace(/([?&])lang=[^&#]*/,"$1lang=ar").replace("zasady.html?","zasady.html?lang=ar&");});
+    set(".ai-section .section-kicker",t.aiK);set(".ai-section .eyebrow",t.aiEy);set(".ai-section h2",t.aiH,true);set(".ai-copy > p",t.aiP);set(".ai-actions .button-primary",t.aiBtn);set(".ai-note",t.aiNote);
+    set(".join-card .section-kicker",t.joinK);set(".join-card h2",t.joinH,true);set(".join-card > p",t.joinP);
+    const cl=document.querySelector(".clarification-panel");if(cl){const h=cl.querySelectorAll("h3"),p=cl.querySelectorAll("p");if(h[0])h[0].textContent=t.contributionH;if(p[0])p[0].textContent=t.contributionP;if(h[1])h[1].textContent=t.privacyH;if(p[1])p[1].textContent=t.privacyP;}
+    const form=document.getElementById("contactForm");if(form){const labels=form.querySelectorAll("label");[t.name,t.topic,t.message].forEach((v,i)=>{if(labels[i])labels[i].textContent=v;});const ta=document.getElementById("contactMessage");if(ta)ta.placeholder=t.messagePh;const opts=form.querySelectorAll("#contactTopic option");t.topicOptions.forEach((v,i)=>{if(opts[i])opts[i].textContent=v;});setCard(form,'button[type="submit"]',t.send);set("#contact-note",t.contactPrivacy);set("#privacy-plain",t.plainPrivacy);}
+    set(".join-footnote",t.free);
+    const fl=document.querySelectorAll(".footer-links a");t.footer.forEach((v,i)=>{if(fl[i])fl[i].textContent=v;});const spans=document.querySelectorAll(".footer-bottom span");if(spans[1])spans[1].textContent=t.footerBottom;set(".footer-bottom a",t.footerTop);set(".support-note",t.footerSupport);
+    set("#language-label","اللغة");selector.setAttribute("aria-label","اختر اللغة");
+    document.querySelectorAll(".site-header a.brand").forEach(e=>e.setAttribute("aria-label","NEURO LEAGUE OPEN — الصفحة الرئيسية"));
+    document.querySelectorAll(".menu-toggle").forEach(e=>e.setAttribute("aria-label","افتح القائمة"));
+    document.querySelectorAll("#mainNav a, .hero-actions a, .nlo-ai-links a, .area-card a").forEach(a=>{if(a.href.includes(".html")){const u=new URL(a.href);u.searchParams.set("lang","ar");a.href=u.toString();}});
+    let style=document.getElementById("arabic-rtl-style");if(!style){style=document.createElement("style");style.id="arabic-rtl-style";style.textContent=`
+      html[dir="rtl"] body{direction:rtl;text-align:right;font-family:"Noto Sans Arabic","Tahoma",Arial,sans-serif}
+      html[dir="rtl"] .site-header,html[dir="rtl"] .header-language,html[dir="rtl"] .hero-actions,html[dir="rtl"] .footer-main,html[dir="rtl"] .footer-bottom,html[dir="rtl"] .footer-links{direction:rtl}
+      html[dir="rtl"] .site-header nav{direction:rtl}
+      html[dir="rtl"] .hero-copy,html[dir="rtl"] .section-heading,html[dir="rtl"] .join-card,html[dir="rtl"] .ai-copy{ text-align:right}
+      html[dir="rtl"] .nlo-showcase-head,html[dir="rtl"] .nlo-vision-copy,html[dir="rtl"] .nlo-ai-start{text-align:right}
+      html[dir="rtl"] .nlo-ai-links,html[dir="rtl"] .topic-form-actions{direction:rtl}
+      html[dir="rtl"] input,html[dir="rtl"] textarea,html[dir="rtl"] select{direction:rtl;text-align:right}
+      html[dir="rtl"] .area-card,html[dir="rtl"] .principle,html[dir="rtl"] .rule-row,html[dir="rtl"] .commons-panel,html[dir="rtl"] .commons-board{text-align:right}
+      html[dir="rtl"] .rule-row{direction:rtl}
+      html[dir="rtl"] .footer-main,html[dir="rtl"] .footer-bottom{flex-direction:row-reverse}
+      html[dir="rtl"] .gradient-text{unicode-bidi:plaintext}
+      html[dir="rtl"] .brand,html[dir="rtl"] .brand-name{direction:ltr}
+      html[dir="rtl"] .ai-orbit,html[dir="rtl"] .hero-art{direction:ltr}
+      html[dir="rtl"] .site-header nav a{unicode-bidi:plaintext}
+      html[dir="rtl"] .section-kicker,html[dir="rtl"] .eyebrow{letter-spacing:0}
+    `;document.head.appendChild(style);}
+  }
+  function setCard(root,q,v){const e=root.querySelector(q);if(e)e.textContent=v;}
+  selector.addEventListener("change",()=>{if(selector.value==="ar")apply();});
+  if(new URLSearchParams(location.search).get("lang")==="ar"||(()=>{try{return localStorage.getItem("nlo-language")==="ar"}catch{return false}})()){selector.value="ar";apply();}
+})();
