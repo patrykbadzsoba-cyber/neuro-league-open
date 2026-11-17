@@ -14,6 +14,7 @@ const params=new URLSearchParams(location.search); const requested=params.get("l
 function setText(el,value){if(el)el.textContent=value}
 function setHTML(el,value){if(el)el.innerHTML=value}
 function apply(lang){
+if(lang==='fa-AF'||lang==='ps'){selector.value=lang;try{localStorage.setItem('nlo-language',lang)}catch{};return;}
 const p=packs[lang]||packs.en; document.documentElement.lang=lang;document.documentElement.dir="ltr";selector.value=lang;
 const copy={
 pl:{areas:[["NEURAL LINK","Otwarta infrastruktura komunikacji i współpracy. Człowiek jest gospodarzem, technologia gościem."],["NEUROHARMONY","Nauka o chemii życia: mózg, emocje, sen, stres i neuroplastyczność."],["REGENERACJA","Ochrona i odbudowa systemów przyrodniczych oraz lokalne działania terenowe."],["COMMONS","Wspólna przestrzeń rozmowy, wymiany wiedzy i inicjowania współpracy."],["TECHNOLOGIA","Otwarte narzędzia projektowane z myślą o autonomii, prywatności i dostępności."],["GLOBAL DNB","Wspólny rytm, kultura i odpowiedzialność za jedną planetę."],["LUDZKOŚĆ","Otwarta współpraca nad dostępem do podstawowych zasobów, z poszanowaniem autonomii i prywatności."]],principles:[["Wolność myśli","Przestrzeń na pytania, różne perspektywy i niezależne myślenie."],["Godność człowieka","Każda osoba zasługuje na szacunek, bezpieczeństwo i podmiotowość."],["Współpraca","Łączymy kompetencje i doświadczenia, zamiast budować niepotrzebne bariery."],["Technologia dla życia","Narzędzia mają służyć ludziom i żywym systemom — nie odwrotnie."]]},
@@ -45,7 +46,7 @@ const footerTop=document.querySelector(".footer-bottom a");if(footerTop&&p.foote
 const footerSupport=document.querySelector(".support-note");if(footerSupport&&p.footerSupport)footerSupport.textContent=p.footerSupport;
 try{localStorage.setItem("nlo-language",lang)}catch{}
 }
-const initial=requested==="ar"?"ar":(saved==="ar"?"ar":(supported.includes(requested)?requested:(supported.includes(saved)?saved:(supported.includes(browser)?browser:"en"))));
+const rtlSupported=["fa-AF","ps"]; const initial=rtlSupported.includes(requested)?requested:(rtlSupported.includes(saved)?saved:(requested==="ar"?"ar":(saved==="ar"?"ar":(supported.includes(requested)?requested:(supported.includes(saved)?saved:(supported.includes(browser)?browser:"en")))));
 apply(initial);selector.addEventListener("change",()=>apply(selector.value));
 document.querySelectorAll('a[href$=".html"],a[href*=".html#"]').forEach(a=>{a.addEventListener("click",()=>{try{localStorage.setItem("nlo-language",selector.value)}catch{}})});
 })();
