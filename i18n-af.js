@@ -1,6 +1,9 @@
 (() => {
   const select = document.getElementById('languageSelect');
   if (!select) return;
+  [['fa-AF','دری'],['ps','پښتو']].forEach(([value,label])=>{
+    if(![...select.options].some(o=>o.value===value)){const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);}
+  });
   const packs = {
     'fa-AF': {
       label:'دری', nav:['ایده','بخش‌ها','انجمن','کارت اشتراک و بذر','اصول','گفت‌وگو با هوش مصنوعی','به گفت‌وگو بپیوندید'],
@@ -87,8 +90,21 @@
     select.setAttribute('aria-label',p.language);
   }
   function setCard(root,q,v){const e=root.querySelector(q);if(e)e.textContent=v;}
-  select.addEventListener('change',apply);
-  try { const saved=localStorage.getItem('nlo-language'); if(packs[saved]) {select.value=saved;apply();} } catch {}
-  if (packs[select.value]) apply();
+  select.addEventListener('change',()=>{
+    if(packs[select.value]) {
+      apply();
+      try { localStorage.setItem('nlo-language',select.value); } catch {}
+    } else {
+      document.documentElement.dir='ltr';
+      document.body.classList.remove('lang-af-rtl');
+    }
+  });
+  const requested=new URLSearchParams(window.location.search).get('lang');
+  try {
+    const saved=localStorage.getItem('nlo-language');
+    const initial=packs[requested]?requested:(packs[saved]?saved:'');
+    if(initial){select.value=initial;apply();}
+  } catch {}
+  if(packs[select.value]) apply();
   window.addEventListener('storage',e=>{if(e.key==='nlo-language'&&packs[e.newValue]){select.value=e.newValue;apply();}});
 })();
