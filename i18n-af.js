@@ -5,7 +5,7 @@
     'fa-AF': {
       label:'دری', nav:['ایده','بخش‌ها','انجمن','کارت اشتراک و بذر','اصول','گفت‌وگو با هوش مصنوعی','به گفت‌وگو بپیوندید'],
       eyebrow:'فضای باز برای همکاری', hero:'به سادگی<br><span class="gradient-text">با هم.</span>',
-      lead:'جایی که مردم، ایده‌ها و فناوری برای ساختن چیزی نیک با هم دیدار می‌کنند؛ بدون排除، تظاهر یا مانع.',
+      lead:'جایی که مردم، ایده‌ها و فناوری برای ساختن چیزی نیک با هم دیدار می‌کنند؛ بدون طرد، تظاهر یا مانع.',
       join:'به گفت‌وگو بپیوندید', idea:'با ایده آشنا شوید', note:'انسان در مرکز است. فناوری یک ابزار است.',
       ideaTitle:'نه یک پلتفرم دیگر.<br><span class="muted">راهی تازه برای با هم بودن.</span>',
       ideaDesc:'NEURO LEAGUE OPEN یک ابتکار باز است. این ابتکار به یک فرد، شرکت یا سیستم تعلق ندارد. ارزش آن را مردمی می‌سازند که داوطلبانه دانش، تجربه و عمل خود را شریک می‌سازند.',
@@ -60,6 +60,11 @@
     if (!p) return;
     document.documentElement.lang = lang;
     document.documentElement.dir = 'rtl';
+    if (!document.getElementById('nlo-af-rtl')) {
+      const style=document.createElement('style'); style.id='nlo-af-rtl';
+      style.textContent='html[dir="rtl"] body,html[dir="rtl"] .site-header,html[dir="rtl"] nav,html[dir="rtl"] .hero-copy,html[dir="rtl"] .section-heading,html[dir="rtl"] .area-card,html[dir="rtl"] .principle,html[dir="rtl"] .join-card,html[dir="rtl"] .ai-copy,html[dir="rtl"] .commons-panel,html[dir="rtl"] .commons-board,html[dir="rtl"] .site-footer{text-align:right;direction:rtl} html[dir="rtl"] .site-header,html[dir="rtl"] .footer-main,html[dir="rtl"] .footer-bottom{flex-direction:row-reverse} html[dir="rtl"] input,html[dir="rtl"] textarea,html[dir="rtl"] select{direction:rtl;text-align:right} html[dir="rtl"] .brand,html[dir="rtl"] .brand-name,html[dir="rtl"] .hero-art{direction:ltr}';
+      document.head.appendChild(style);
+    }
     const set=(q,v,html=false)=>{const e=document.querySelector(q);if(e)e[html?'innerHTML':'textContent']=v;};
     set('#language-label',p.language);
     const nav=[...document.querySelectorAll('#mainNav > a')];
