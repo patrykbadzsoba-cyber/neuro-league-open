@@ -19,6 +19,29 @@
 <div class="section"><h2 data-t="help">How can we help?</h2><span class="eyebrow" data-t="requests">GUEST REQUESTS</span></div>
 <section class="panels"><div class="panel"><h3 data-t="requestTitle">Send a request to reception</h3><label data-t="roomLabel">ROOM / BOOKING REFERENCE</label><input id="room" placeholder="e.g. Room 204"><label data-t="needLabel">WHAT DO YOU NEED?</label><textarea id="requestText" rows="3" placeholder="Extra towels, housekeeping, a question…"></textarea><button onclick="sendRequest()" data-t="send">Send request</button></div>
 <div class="panel"><h3 data-t="quick">Quick links</h3><p class="muted" data-t="quickD">Connect these actions to your hotel's existing services.</p><button onclick="toast('Demo: direct booking URL can be configured here')" data-t="book">Book direct</button> <button onclick="toast('Demo: hotel contact channel can be configured here')" data-t="contact">Contact hotel</button><div class="note" data-t="privacy">Demo only: requests are stored in this browser session. Production requires secure storage, staff authentication, hotel-specific content and a data-protection review.</div></div></section>
+<section class="section"><h2>Autonomous valet parking</h2><span class="eyebrow">SMART MOBILITY · AVP</span></section>
+<section class="panel" id="avp">
+  <div class="panels">
+    <div>
+      <div class="ico">🚘</div>
+      <h3>Let your car park itself</h3>
+      <p class="muted">At a participating hotel and parking facility, leave your vehicle in the designated handover zone. An approved Automated Valet Parking system can move it to a space and bring it back when requested.</p>
+      <label for="avpVehicle">VEHICLE</label><input id="avpVehicle" placeholder="Make, model and year">
+      <label for="avpPlate">REGISTRATION</label><input id="avpPlate" placeholder="Vehicle registration">
+      <label for="avpFacility">HOTEL / PARKING FACILITY</label><input id="avpFacility" placeholder="Choose a participating facility">
+      <button onclick="checkAVPEligibility()">Check compatibility</button>
+      <div class="note">Autonomous movement is available only where the vehicle, parking infrastructure, software and local approval are compatible. StayFlow does not directly steer or unlock vehicles.</div>
+    </div>
+    <div>
+      <h3>Vehicle journey</h3>
+      <div class="request"><b>1 · Handover</b><br><span class="muted">You leave the car in the marked drop-off zone and confirm everyone has exited.</span></div>
+      <div class="request"><b>2 · Autonomous parking</b><br><span class="muted">The certified AVP system checks the route, moves the car and confirms its parking position.</span></div>
+      <div class="request"><b>3 · Request your car</b><br><span class="muted">Use StayFlow to request retrieval. The system returns the car to the approved pick-up zone.</span></div>
+      <div id="avpStatus" class="note" aria-live="polite">Demo preview — no vehicle or parking system is connected.</div>
+      <button class="ghost" style="background:#293833;color:white" onclick="requestAVPRetrieval()">Preview vehicle retrieval</button>
+    </div>
+  </div>
+</section>
 <section class="panel admin" id="admin"><div class="section" style="margin-top:0"><h2>Hotel dashboard — demo</h2><span class="eyebrow">LOCAL PREVIEW</span></div><p class="muted">Requests from this browser appear here. This is not a live staff system.</p><div id="requestsList">No requests yet.</div></section>
 </main><footer><span>StayFlow · White-label guest experience for independent hotels</span><span>Concept prototype · Not connected to hotel systems</span></footer><div id="toast"></div>
 <script>
@@ -34,5 +57,15 @@ function setLang(l){document.documentElement.lang=l;document.querySelectorAll("[
 function toast(s){const e=document.getElementById("toast");e.textContent=s;e.style.display="block";setTimeout(()=>e.style.display="none",2500)}
 const requests=[];
 function sendRequest(){const room=document.getElementById("room").value.trim(),text=document.getElementById("requestText").value.trim();if(!room||!text){toast("Please enter room and request.");return}requests.unshift({room,text,time:new Date().toLocaleString()});document.getElementById("room").value="";document.getElementById("requestText").value="";document.getElementById("requestsList").innerHTML=requests.map(r=>'<div class="request"><b>'+escapeHtml(r.room)+'</b> · '+escapeHtml(r.time)+'<br>'+escapeHtml(r.text)+'</div>').join("");toast("Demo request added")}
+function checkAVPEligibility(){
+ const vehicle=document.getElementById("avpVehicle").value.trim();
+ const facility=document.getElementById("avpFacility").value.trim();
+ const status=document.getElementById("avpStatus");
+ if(!vehicle||!facility){status.textContent="Enter the vehicle and participating facility to continue.";return}
+ status.textContent="Demo only: compatibility must be verified with the vehicle manufacturer and parking operator. No live eligibility check has been performed.";
+}
+function requestAVPRetrieval(){
+ document.getElementById("avpStatus").textContent="Demo only: retrieval request preview. A live deployment must send this request to the certified AVP operator and confirm vehicle identity, authorization and safe pick-up status.";
+}
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 </script></body></html>
