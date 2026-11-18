@@ -1,84 +1,114 @@
-# StayFlow — Smart Valet & Autonomous Vehicle Handling
+# StayFlow Smart Valet — Sensor-Coordinated Autonomous Hotel Parking
 
-Status: product concept and guest-flow preview. No robot, vehicle, parking operator, or OEM system is connected.
+**Status:** architecture concept and guest-interface prototype. This repository does not contain certified autonomous-driving software, a safety controller, hardware drivers, or live integrations. No real vehicle can be moved by the current demo.
 
-## Product principle
-StayFlow must not require a guest to own a self-driving vehicle. The hotel/parking facility chooses a safe handling method for each vehicle. The guest experience remains one simple request in StayFlow.
+## Product vision
+A hotel guest arrives, stops in a designated handover zone, exits with their luggage and leaves. The system—not a human valet—identifies the vehicle, verifies that the handover zone is clear, selects a free bay, checks a safe route, coordinates autonomous movement and confirms secure parking. When the guest requests the car, the system retrieves it to a designated pick-up zone.
 
-## Three handling modes
-1. **Vehicle-native Automated Valet Parking (AVP):** for a vehicle and facility explicitly approved for SAE Level 4 AVP. The OEM / AVP provider moves the unoccupied vehicle under its approved operational design domain.
-2. **External robotic vehicle handling:** an autonomous parking robot or AGV physically lifts/moves the stationary vehicle, typically by its wheels or using a carrier/pallet. The vehicle does not need its own autonomous-driving computer and does not need to be started. A real system such as Stanley Robotics' Stan demonstrates this category: it scans vehicle dimensions, lifts the vehicle by its wheels and transports it using fleet-management software.
-3. **Human chauffeur fallback:** when a vehicle is not compatible with the available robot/platform, or the owner requests human handling, a vetted and insured hotel valet takes the vehicle under the hotel's documented key-control and insurance procedures. This is a manual fallback, not autonomous operation.
+The service should not depend on the guest tipping a parking attendant or handing keys to a person. The aim is a consistent guest-facing service across hotel brands and countries.
 
-## Luxury and performance vehicle requirements
-Do not claim universal compatibility. For Maybach, Mercedes-AMG, Bentley, Rolls-Royce, Ferrari, Lamborghini, Porsche and other premium / performance vehicles, eligibility must be checked per exact model and configuration.
+## The key engineering distinction
+A network of cameras and sensors can perceive the garage, track vehicles and plan/monitor routes. **Sensors alone cannot steer or propel an ordinary car.** Every deployment needs a physically valid movement method:
+1. **Vehicle-native AVP:** an eligible vehicle with approved automated-driving hardware/software and a supported facility interface.
+2. **Autonomous carrier / robotic parking vehicle:** a purpose-built machine moves a stationary, unoccupied guest car. This is the route to investigate for vehicles that do not have their own AVP capability. The carrier must support the vehicle's exact dimensions, weight, wheel/tyre geometry, ground clearance and underbody constraints.
+3. **No autonomous service for that vehicle/site:** if neither method is approved and compatible, StayFlow must not imply that the vehicle can be moved autonomously. The product should show the limitation and an optional separately disclosed conventional parking alternative; the core autonomous service must never silently fall back to a human valet.
 
-Required checks include:
-- vehicle mass and axle loads;
-- wheelbase, track width, overall length and width;
-- minimum ground clearance and underbody geometry;
-- tyre dimensions, wheel design, wheel offset and permitted wheel contact zones;
-- low front splitters, side skirts, air suspension position and aftermarket bodywork;
-- EV battery / underbody protection and manufacturer restrictions;
-- robot or platform rated capacity and geometry;
-- safe access to the handover bay and parking route;
-- insurance coverage, custody chain and documented pre/post-condition inspection.
+## Reference architecture
 
-Some long-wheelbase, heavy, low-clearance or modified vehicles will not fit a given robot's operating envelope. The product must show a verified handling option or offer human valet / alternative secure parking. Never force a vehicle into an unsuitable robot.
+### A. Site perception layer
+A modular sensor kit is installed in the garage and handover / collection areas:
+- overhead and fixed cameras for vehicle/person/object detection and zone coverage;
+- LiDAR at critical intersections, ramps, blind corners and handover areas for 3D obstacle detection and localization;
+- radar or other independent sensing where required by the safety case;
+- bay occupancy sensors (ultrasonic, magnetometer or camera-based) to determine free/occupied spaces;
+- door, gate, lift, fire-system and access-control status inputs;
+- optional environmental sensors for lighting, smoke/fire and water ingress as required by the facility design.
 
-## Guest workflow
-1. Guest chooses the hotel and parking service in StayFlow.
-2. Guest provides vehicle make/model/year and registration, or selects an existing vehicle profile. Collect only what is needed.
-3. The facility's compatibility service checks the exact vehicle against available handling methods and their limits.
-4. StayFlow shows the available option: vehicle-native AVP, external robot/platform, or human valet. Clearly disclose which method will be used.
-5. Guest books a handover slot and receives the marked entrance / instructions.
-6. At handover, staff/system verifies identity and booking, records vehicle condition (photos with consent), mileage if relevant, fuel/charge state, keys custody if applicable, and guest authorization.
-7. The selected operator performs the move. StayFlow displays status and parking receipt/location.
-8. Guest requests return. The same authorized operator brings the car to the designated collection point.
-9. Guest verifies the vehicle and completes the handover; condition record is closed.
+The exact mix is selected after a site survey and safety engineering. Existing CCTV or parking sensors may be reusable for non-safety functions, but must not automatically be treated as safety-rated perception.
 
-## Luxury guest experience
-- discreet, reserved handover area and scheduled arrival;
-- no unnecessary key transfer for robot/platform methods;
-- clear custody, insurance and liability terms;
-- optional concierge coordination and luggage assistance;
-- pre/post-condition report with timestamped photos and guest consent;
-- special handling notes (low clearance, charging, child seats, luggage, privacy);
-- priority retrieval reservation and transparent wait-time updates.
+### B. Edge processing and facility digital map
+An on-site edge computer receives sensor data, time-synchronizes and fuses observations, tracks vehicles and pedestrians, maintains a digital map, identifies free bays and computes candidate paths. It must continue to enter a safe state if cloud or internet connectivity is lost. The cloud is not the real-time safety controller.
 
-## System boundary and safety
-StayFlow is the guest-facing booking, orchestration, status and communication layer. It does not steer, brake, accelerate, unlock, immobilize, or otherwise control a vehicle. Movement is performed only by an approved AVP provider, certified/qualified robotic parking operator, or authorized human valet under applicable law and insurance.
+### C. Independent safety layer
+A separately engineered safety controller / safety PLC supervises permitted operating zones, obstacle-clearance status, speed limits, emergency stops, door/gate interlocks, communication health and system faults. It can inhibit or stop a movement mission. The exact safety architecture and integrity levels require specialist hazard analysis and certification; a web application or AI model must never be the sole safety authority.
 
-For autonomous robot/platform operation:
-- vehicle must be stationary and unoccupied before lifting/movement;
-- verify vehicle dimensions, weight and geometry against the exact robot model's certified limits;
-- use approved lifting/contact points and protect wheels, tyres, bodywork and underbody;
-- operate only within the robot/facility's approved operating domain;
-- stop safely on obstacle, uncertainty, communication loss or fault;
-- maintain a human emergency response and recovery process;
-- never expose generic robot movement controls to guests or untrained hotel staff.
+### D. Vehicle movement layer
+The site controller dispatches a mission to one of:
+- an OEM-authorized vehicle AVP interface; or
+- an autonomous carrier robot / automated parking machinery.
 
-For human valet:
-- require appropriately authorized/insured drivers and clear key custody;
-- obtain explicit guest authorization and document vehicle condition;
-- apply hotel/operator insurance and incident procedures.
+StayFlow does not issue steering, throttle, brake, gear, unlock or immobilizer commands. It sends an authenticated service request to the approved parking operator/controller. Only that controller can decide whether a vehicle and route are eligible and execute a movement mission.
 
-## Known real-world reference
-Stanley Robotics describes Stan as an autonomous robot that scans a vehicle's dimensions, lifts it by the wheels, transports it to a parking location and retrieves it on request. Its published robot specifications include a maximum lift capacity of up to 3 tonnes; actual compatibility still depends on the specific robot, vehicle geometry and facility. The 2026 Gatwick deployment describes its own initial vehicle limits (including maximum weight and wheelbase), demonstrating why compatibility must be facility-specific.
+### E. StayFlow guest and hotel layer
+StayFlow handles hotel identity, guest authorization, booking association, vehicle profile, service availability, arrival window, handover instructions, retrieval request, progress notifications, receipt and support. Hotel staff see operational exceptions and service status, not unrestricted robot/vehicle controls.
 
-## Required integrations
-- hotel booking / guest identity;
-- parking operator availability, bays, handover and retrieval scheduling;
-- robotic parking vendor fleet API, safety state and mission status (where applicable);
-- OEM AVP eligibility and session API (where applicable);
-- valet staff dispatch and secure key custody (manual fallback);
-- condition inspection, insurance, incident management and audit log;
-- privacy controls, retention limits and access permissions.
+## End-to-end guest workflow
+1. Guest books parking or receives the service invitation with the hotel booking.
+2. Guest registers make/model/year and registration; VIN may be requested only when required by the operator for eligibility. Data minimization applies.
+3. Site service checks the vehicle against approved movement methods and exact operating limits.
+4. Guest arrives at a marked handover zone and exits the vehicle with all passengers.
+5. System verifies the handover zone is empty, vehicle identity and authorization are valid, all access gates are in the required state, and the selected movement method is ready.
+6. Facility perception confirms the route is clear and a suitable bay is free. The safety layer authorizes or rejects the mission.
+7. Vehicle-native AVP or the autonomous carrier moves the vehicle within the approved operating domain. StayFlow displays status only.
+8. Parking location and mission completion are confirmed and recorded.
+9. Guest requests retrieval in StayFlow. The controller rechecks the vehicle, route, gates, people and collection zone before dispatch.
+10. Vehicle is returned to the collection zone; the guest is notified and completes collection.
 
-## Delivery plan
-1. Guest-flow prototype and vehicle profile (current stage).
-2. Technical and commercial evaluation with robot/platform vendors and luxury hotel parking operators.
-3. Obtain exact vehicle compatibility matrices and insurance / safety documentation.
-4. Pilot at one facility with a small, verified vehicle list and human fallback.
-5. Add live status/API integrations only after vendor authorization and safety/legal review.
-6. Expand to additional hotels and vehicle categories based on verified compatibility.
+## Universal product, not universal hardware
+The commercial objective is one StayFlow software product that can integrate multiple approved parking infrastructures through standard adapters. It is **not technically honest to claim that one sensor kit can be installed in every hotel and immediately move every car**. Garages differ in geometry, lighting, ramps, pillars, traffic flow, fire compartments, connectivity, legal status and evacuation routes. A standardized retrofit package can reduce custom engineering, but every site still needs a survey, mapping, installation, calibration, commissioning, safety validation and operating approval.
+
+### Standard deployment packages
+- **Package S — Sensor retrofit:** bay occupancy and parking guidance only; no autonomous vehicle movement. Useful as an entry product for hotels not yet ready for AVP.
+- **Package M — Mapped smart garage:** camera/LiDAR perception, edge controller, digital map, access interlocks and fleet interface. Enables autonomous missions only when paired with an approved AVP vehicle or carrier system.
+- **Package L — Full autonomous valet:** Package M plus certified vehicle AVP support or autonomous carrier fleet, dedicated handover/collection zones, redundant safety systems, emergency response and operator certification.
+
+## Premium vehicle requirements
+Support for Maybach, Bentley, Rolls-Royce, Ferrari, Lamborghini, Porsche and other premium/performance vehicles must be verified by exact model and configuration. The eligibility profile includes:
+- overall length/width/height, wheelbase, track width and mass/axle loads;
+- minimum ground clearance, front/rear overhang, splitters, side skirts and air-suspension state;
+- tyre dimensions, wheel geometry, permitted wheel contact and carrier pickup method;
+- underbody and battery protection, exhaust geometry and manufacturer restrictions;
+- modifications, luggage, roof boxes and other protrusions;
+- exact carrier rated capacity and dimensional envelope.
+
+A low-clearance or modified vehicle must not be forced onto an incompatible carrier. The system must reject it or offer a clearly identified alternative; it must not silently hand it to a human.
+
+## Safety principles
+- No movement while any person or animal is in the vehicle or within a prohibited zone.
+- Positive vehicle identity, booking association and guest authorization before each mission.
+- Continuous perception and independent safety monitoring throughout movement.
+- Defined operational design domain: mapped facility, speed, lighting, weather (if outdoor), ramp and surface conditions.
+- Safe stop on obstacle, uncertain detection, sensor disagreement, loss of communications or controller fault.
+- Emergency-stop devices and trained site response; rescue/recovery procedures for disabled carrier or vehicle.
+- Access control, signed commands, secure communications, role-based access, audit logs and cybersecurity assessment.
+- No remote human driving presented as autonomous valet.
+- Insurance, custody, liability, fire safety, accessibility and local regulatory approval before operation.
+
+## Interoperability and integrations
+Create adapter interfaces rather than hard-code one supplier:
+- parking guidance / bay occupancy systems;
+- camera, LiDAR and radar perception vendors;
+- edge controller and safety PLC;
+- autonomous carrier / automated parking machinery fleet API;
+- OEM AVP / vehicle-facility interface where supported;
+- hotel PMS, booking, payment and access control;
+- guest notifications and customer support.
+
+Each adapter must declare its capabilities, safety certification evidence, operational domain, telemetry, error states and supported commands. StayFlow accepts high-level service intents (park vehicle / retrieve vehicle), not low-level motion commands.
+
+## Implementation plan
+1. **Current repo prototype:** guest handover/retrieval concept and illustrative infrastructure status. UI only.
+2. Define vendor-neutral data model and adapter contract for site, sensor zones, parking bays, vehicle profiles, missions, telemetry and fault states.
+3. Conduct a technical feasibility study with AVP OEMs, autonomous carrier vendors, parking operators, insurers and hotel groups.
+4. Select one pilot garage with documented geometry and a limited, validated vehicle envelope.
+5. Install and commission site sensors, edge processing and independent safety controls; validate in a closed test environment.
+6. Connect StayFlow to the operator's authorized high-level API and run end-to-end trials without guest vehicles.
+7. Complete functional safety, cybersecurity, data protection, insurance and regulatory approval.
+8. Launch a constrained pilot, publish exact vehicle/site eligibility, measure reliability and incidents, then standardize retrofit kits for other sites.
+
+## Evidence and references
+- SAAM Automated Valet Parking project: central system, vehicle/facility interoperability and a 22-camera parking garage demonstrator. https://www.saam.swiss/projects/automated-valet-parking-avp/
+- Bosch / APCOA: planned rollout of infrastructure technology to 15 additional German garages, initially installing infrastructure in four spaces per garage. This is evidence of phased, zone-based deployment—not instant compatibility with every garage. https://www.bosch-presse.de/pressportal/de/en/bosch-and-apcoa-to-provide-automated-valet-parking-technology-in-parking-garages-across-germany-250496.html
+- IEEE overview: automated parking combines sensing, obstacle detection, route planning and a safety case; mechanical parking and vehicle-native AVP are distinct approaches. https://technav.ieee.org/topic/automated-parking/
+- Peer-reviewed AVP system architecture study: vehicle-side perception/localization/planning/control and infrastructure-based sensing are distinct subsystems; drive-by-wire and approved vehicle actuation are needed for vehicle-native autonomous movement. https://link.springer.com/article/10.1007/s12239-024-00031-9
+- Retrofit parking occupancy guidance systems can use per-bay sensors or camera heads, but occupancy detection by itself is not autonomous vehicle control. https://kyosis.com/solutions/automated-parking-guidance-system/
