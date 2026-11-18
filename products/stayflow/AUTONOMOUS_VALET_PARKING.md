@@ -171,3 +171,39 @@ The intended baggage process is **human-robot collaboration**, not a fully robot
 It uses commercially established indoor mobile-robot capabilities while retaining people for the variable and delicate tasks: opening different vehicle trunks, handling different luggage shapes, checking fragile items and final room delivery. It avoids pretending that an autonomous manipulator can safely unload every car. The workflow is designed to reduce carrying and walking while keeping accountable staff handoffs.
 
 The hotel may later automate additional steps where a specific validated system makes sense, but robotic trunk unloading is not a dependency for the core product.
+
+
+## Site layout principle: garage-level logistics and hidden back-of-house circulation
+
+**The guest-facing hotel must remain free of baggage handling and service traffic.** Most physical operations happen at garage / service level, outside the public arrival, lobby, bar, restaurant and guest elevator areas.
+
+### Garage / service level
+- Dedicated vehicle handover bays, physically separated from pedestrian paths.
+- The autonomous parking system takes custody of the vehicle only after guest exit and safety checks.
+- A trained garage support crew handles luggage: unloads the trunk with guest authorization, checks count and visible condition, applies booking-linked tags and loads the transport robot.
+- A secure staging / dispatch area buffers luggage and robot missions so staff do not crowd the vehicle handover lane.
+- The garage crew also handles exceptional items and luggage that cannot safely be placed on a robot.
+
+### Back-of-house transport
+- Robots travel through mapped service corridors and dedicated service lifts.
+- They do not use public lobby routes or guest elevators during normal operation.
+- Service lifts, doors and access-control points are coordinated with the robot fleet manager and building management system.
+- Route planning separates robot traffic from guests, housekeeping carts, deliveries, fire exits and emergency access.
+- A robot waits at a designated service handoff point; it does not autonomously enter guest rooms.
+
+### Floor-side delivery
+- A small floor support team receives luggage at a discreet service point.
+- Staff verify room assignment and bag identifiers, then deliver luggage to the room.
+- StayFlow sends the guest a confirmation; the guest can go directly to the bar, restaurant or room without waiting in the lobby.
+
+### Operating layout and staffing
+- Garage support crew: vehicle-side luggage collection, tagging, loading, exception handling.
+- Robot fleet: repetitive internal transport between garage/service level and floor-side handoff points.
+- Floor support: final delivery, guest-specific requests and exception resolution.
+- Central StayFlow orchestration: task assignment, lift scheduling, robot dispatch, custody events and notifications.
+
+### Building design requirements
+A hotel retrofit needs a site survey to identify whether service lifts, corridors, fire compartments, door widths, floor transitions, turning radii, charging points and staging areas can support robots. New-build hotels should plan a dedicated service circulation spine and service lift access from the garage to each accommodation level. Fire doors, evacuation routes and emergency responder access must never be obstructed. If a site lacks suitable service circulation, it must not send robots through guest spaces by default; it needs a site-specific redesign or a clearly scoped manual exception process.
+
+### Guest experience rule
+The guest should see the service outcome, not the logistics: car safely parked, luggage delivered, room ready, optional welcome service waiting. No queue for a porter, no luggage carts crossing the lobby, and no need to coordinate separate hotel departments.
