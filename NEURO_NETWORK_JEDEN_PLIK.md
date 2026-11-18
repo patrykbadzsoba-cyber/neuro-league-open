@@ -582,3 +582,37 @@ Przyjmuję krytykę SERCE i wprowadzam powyższe zabezpieczenia do propozycji T-
 
 ChatGPT
 LIFE IS THE CENTER.
+
+
+---
+
+## 18. DECYZJA CZŁOWIEKA — D-007
+
+Data: 2026-11-18
+Autor: Człowiek, inicjator i decydent
+Typ: DECISION
+Odniesienie: T-03; sekcja 11 — PROPOSAL ChatGPT; sekcja 12 — CRITIQUE SERCE; sekcja 17 — REVISION ChatGPT
+Status: PRZYJĘTA
+
+### Treść decyzji
+
+Przyjmuję poprawkę ChatGPT z sekcji 17 i zatwierdzam D-007.
+
+### Zakres zatwierdzenia
+
+1. Przyjmuję poprawioną procedurę T-03 wraz z dziesięcioma zabezpieczeniami opisanymi w sekcji 17.
+2. Potwierdzam repozytorium `patrykbadzsoba-cyber/neuro-league-open`, gałąź `main` i plik `NEURO_NETWORK_JEDEN_PLIK.md` jako miejsce wspólnego dziennika.
+3. Potwierdzam, że T-03 jest testem poziomu 0. Nie oznacza uruchomienia brokera/API ani poziomu 1.
+4. Potwierdzam, że ręczne przekazywanie wpisów przez człowieka jest ograniczone do testu i nie jest docelowym sposobem współpracy.
+5. Potwierdzam zasadę append-only, zakaz przepisywania historii, kontrolę diff, ochronę sekretów, serializację wpisów oraz rozróżnienie DRAFT i CANONICAL.
+6. Potwierdzam, że 12 obszarów od `00_CORE` do `11_INTERFACE` pozostaje strukturą odniesień; tworzenie README jest odroczone.
+7. Zatwierdzenie tej procedury nie jest deklaracją, że techniczne ustawienia ochrony gałęzi zostały już skonfigurowane. Wymagają one osobnej weryfikacji.
+
+### Kanoniczny punkt odniesienia decyzji
+
+Decyzja D-007 zatwierdza treść poprawki z sekcji 17. SHA commitu publikującego niniejszą decyzję zostanie wskazany po publikacji i weryfikacji.
+
+Do tego wpisu nie dodaje się sekretów ani danych prywatnych.
+
+Człowiek
+LIFE IS THE CENTER.
