@@ -207,3 +207,63 @@ A hotel retrofit needs a site survey to identify whether service lifts, corridor
 
 ### Guest experience rule
 The guest should see the service outcome, not the logistics: car safely parked, luggage delivered, room ready, optional welcome service waiting. No queue for a porter, no luggage carts crossing the lobby, and no need to coordinate separate hotel departments.
+
+
+## Existing-hotel deployment and invisible luxury guest experience
+
+StayFlow is an application layer for a hotel that already exists and is operating. It is not a proposal to build a new hotel, redesign the building or require every property to install a new physical infrastructure. The product must be deployable in stages, using the hotel's current teams, service providers and systems wherever possible.
+
+### Guest-facing principle: show the luxury, hide the machinery
+
+The guest interface must never expose internal logistics as a feature. Do not show camera networks, LiDAR, robot routes, staff dispatch, lift coordination, staging areas, handoff procedures, operational dashboards or technical eligibility checks in the normal guest journey. Those belong exclusively in authenticated staff/operations views.
+
+The guest sees a calm, premium digital concierge and a small number of outcome-oriented services:
+- effortless arrival and parking request;
+- luggage collected and delivered to the room;
+- room preferences prepared before arrival, where supported;
+- welcome drink, refreshments or personal welcome;
+- restaurant table and in-room dining requests;
+- spa, wellness, fitness and curated local experiences;
+- private transfers and transport requests;
+- housekeeping, laundry, amenities and late checkout;
+- one personal concierge message for anything else;
+- discreet status updates only when the guest needs to act or know that a service is complete.
+
+### Invisible operations, visible outcomes
+
+StayFlow coordinates existing hotel departments and any connected partners behind the scenes. The guest should not have to identify which department handles a request, repeat information, call several numbers or wait in a public area while staff coordinate. Operational tasks are routed to the appropriate authenticated team. Robots and automated systems, where deployed, remain in service/back-of-house areas and are not presented as guest-facing attractions.
+
+For arrival, the guest-facing promise is simple: leave the vehicle at the designated arrival point, continue into the hotel, and receive the car and luggage services according to what that specific property can actually provide. The garage crew, parking operator, transport robot, service lift and floor team are operational implementation details, not guest UI content.
+
+### Retrofit-first deployment model
+
+The first target is an existing hotel. Deployment begins with a service and systems inventory, not construction:
+1. Configure the hotel's identity, languages, service catalogue, opening hours, policies and contact routes.
+2. Connect the existing booking/PMS identity and guest authorisation flow where supported.
+3. Route requests to existing reception, concierge, housekeeping, food and beverage, spa and transport teams.
+4. Add integrations selectively: room controls, restaurant reservations, payment, parking, luggage delivery, messaging and access systems.
+5. Add autonomous parking or indoor transport only if the property already has, or separately commissions, compatible and approved equipment. These are optional integrations, not prerequisites for StayFlow.
+6. Train staff, test handoffs and launch a limited service catalogue before expanding.
+
+No new hotel construction, dedicated service spine or building-wide robot infrastructure is required for the core StayFlow application. A particular automation may require a site survey or physical adaptation, but the app itself must remain useful without it.
+
+### Premium UX rules
+
+- Minimal, elegant interface; no technical jargon or internal process diagrams.
+- One QR/browser entry point; no mandatory app installation.
+- Multilingual and white-label, matching the hotel's brand and visual identity.
+- Service tiles describe guest benefits, not departments or equipment.
+- Guest details are collected once and reused only for authorised fulfilment.
+- Avoid repeated forms: booking identity should prefill room and stay details after secure verification.
+- No noisy notifications or unnecessary progress tracking; communicate only useful milestones.
+- Offer preferences and personalisation without implying that unsupported room or physical services are available.
+- Show availability and confirmation only when connected hotel systems have actually confirmed them.
+- Provide a human concierge contact at all times; automation supports staff rather than replacing hospitality.
+
+### Product truth and capability states
+
+Each service must be labelled internally as one of: configured and live, staff-managed, partner-integrated, unavailable at this property, or demo-only. The guest UI must never present a demo action as a confirmed booking or completed service. Hotel-specific capability configuration determines which tiles appear. StayFlow is the orchestration and guest-experience layer; it does not itself create parking capacity, deliver luggage, control room hardware or guarantee a service that the hotel has not enabled.
+
+### Commercial positioning
+
+StayFlow is sold to existing hotels as a white-label guest-experience and service-orchestration platform. The hotel can introduce a premium, discreet digital concierge without rebuilding the property. The differentiator is not a claim that robots or AI are unique; it is the coherent guest journey, low-friction access, brand-fit interface and behind-the-scenes coordination across the hotel's existing operation and optional connected services.
