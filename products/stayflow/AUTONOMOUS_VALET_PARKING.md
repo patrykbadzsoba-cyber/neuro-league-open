@@ -112,3 +112,39 @@ Each adapter must declare its capabilities, safety certification evidence, opera
 - IEEE overview: automated parking combines sensing, obstacle detection, route planning and a safety case; mechanical parking and vehicle-native AVP are distinct approaches. https://technav.ieee.org/topic/automated-parking/
 - Peer-reviewed AVP system architecture study: vehicle-side perception/localization/planning/control and infrastructure-based sensing are distinct subsystems; drive-by-wire and approved vehicle actuation are needed for vehicle-native autonomous movement. https://link.springer.com/article/10.1007/s12239-024-00031-9
 - Retrofit parking occupancy guidance systems can use per-bay sensors or camera heads, but occupancy detection by itself is not autonomous vehicle control. https://kyosis.com/solutions/automated-parking-guidance-system/
+
+
+## Coordinated luggage-to-room service
+
+The arrival experience is a coordinated set of independent services:
+- **Vehicle movement:** the parking system moves the car to its assigned space using an approved vehicle AVP interface or autonomous carrier.
+- **Luggage collection:** a separate baggage-handling unit is assigned to the guest's arrival. The long-term automation target is robotic trunk access and unloading using a purpose-built manipulator, followed by secure transfer to an autonomous indoor delivery robot.
+- **Room delivery:** an indoor mobile robot transports tagged luggage through mapped corridors and approved lifts to the guest's room. The hotel access-control and lift systems provide authorized route access.
+- **Room readiness:** StayFlow checks room status and, where supported and authorized, coordinates climate, lighting and guest preferences.
+- **Welcome:** the guest can choose a bar reservation, welcome drink or in-room service without waiting for the luggage workflow.
+
+### Important technical boundary
+Indoor luggage delivery robots are commercially available, but fully autonomous extraction of arbitrary luggage from arbitrary vehicle trunks is a substantially harder robotics problem and must not be represented as an off-the-shelf capability. Trunk geometry, powered tailgate controls, vehicle security, luggage shape/weight, fragile objects and guest privacy all vary. A real autonomous unloading system needs a validated robotic manipulator, vehicle-specific access procedure, object detection/grasp planning, force limits, human-safe operation, custody verification and a fallback for unsupported vehicles. Until a validated robotic unloading solution is integrated, the hotel must clearly identify any human-assisted unloading as a separate optional service; it must not pretend that a robot performed the work.
+
+### Luggage chain of custody
+1. Associate the luggage request with the verified guest booking and vehicle arrival.
+2. Confirm the vehicle is stationary, secured and in the designated handover bay.
+3. Record bag count and optional visual condition record with guest consent.
+4. Assign a unique bag identifier (QR/RFID/NFC tag) and link it to the guest and destination room.
+5. Transfer bags to the indoor delivery robot using an approved loading interface.
+6. Confirm each bag is loaded and secured before movement.
+7. Navigate only through mapped, accessible, guest-safe routes; coordinate automatic doors and lifts through authorized interfaces.
+8. Deliver to the room or an explicitly selected secure handover point. Verify recipient authorization before release.
+9. Record delivery confirmation and close custody record.
+
+### Robot and building integrations
+- baggage manipulator / trunk access system;
+- indoor autonomous mobile robot (AMR) fleet manager;
+- elevators, access-controlled doors and destination-floor permissions;
+- luggage identification and chain-of-custody service;
+- hotel PMS / room assignment / room-ready state;
+- guest notifications and concierge escalation;
+- fire alarm and emergency routing interlocks.
+
+### Guest promise
+The guest should be able to leave the vehicle, proceed directly to the bar or room, and receive their luggage without having to manage separate hotel departments. StayFlow coordinates the experience; each physical robot and building subsystem remains responsible for its certified safe operation.
