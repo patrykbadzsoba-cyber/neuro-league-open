@@ -148,3 +148,26 @@ Indoor luggage delivery robots are commercially available, but fully autonomous 
 
 ### Guest promise
 The guest should be able to leave the vehicle, proceed directly to the bar or room, and receive their luggage without having to manage separate hotel departments. StayFlow coordinates the experience; each physical robot and building subsystem remains responsible for its certified safe operation.
+
+
+## Corrected operating model: hotel staff + transport robots
+
+The intended baggage process is **human-robot collaboration**, not a fully robotic trunk-unloading system.
+
+1. A hotel employee meets the guest at the arrival / vehicle handover area after the passengers have exited.
+2. The employee opens the luggage compartment with the guest's authorization, unloads the suitcases, checks the bag count and visible condition, and attaches a booking-linked identifier.
+3. The employee places the luggage onto an indoor autonomous mobile robot (AMR) or powered luggage cart. The robot is responsible for transport, not trunk manipulation.
+4. The robot follows a mapped, accessible route and requests an authorized lift journey through the building-management / elevator interface.
+5. At the destination floor, a second hotel employee receives the luggage, verifies the room assignment and takes the bags to the guest's room.
+6. StayFlow records the handoffs and sends the guest a delivery confirmation.
+
+### Role allocation
+- **Arrival employee:** guest greeting, unloading, bag count, tagging, condition/custody check and loading the robot.
+- **Transport robot:** carrying bags through corridors and lifts; obstacle detection, safe stopping and delivery to the designated staff handoff point.
+- **Floor employee:** receiving bags, verifying room number and completing the last metres to the guest's door.
+- **StayFlow:** links the booking, room, bag identifiers, robot mission, lift request, staff handoffs, timestamps and guest notifications.
+
+### Why this is the intended first deployment
+It uses commercially established indoor mobile-robot capabilities while retaining people for the variable and delicate tasks: opening different vehicle trunks, handling different luggage shapes, checking fragile items and final room delivery. It avoids pretending that an autonomous manipulator can safely unload every car. The workflow is designed to reduce carrying and walking while keeping accountable staff handoffs.
+
+The hotel may later automate additional steps where a specific validated system makes sense, but robotic trunk unloading is not a dependency for the core product.
