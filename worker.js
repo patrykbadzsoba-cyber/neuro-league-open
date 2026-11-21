@@ -2,6 +2,58 @@ export class NeuroBus {
   constructor(state) { this.state = state; }
   async fetch(request) {
     const url = new URL(request.url);
+    if (url.pathname === '/network/nodes' && request.method === 'GET') {
+      const nodes = await this.state.storage.get('network:approved_nodes') || [];
+      return Response.json({nodes});
+    }
+    if (url.pathname === '/network/nodes' && request.method === 'POST') {
+      let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+      const ip = request.headers.get('x-forwarded-for') || 'unknown';
+      const ipHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
+      const key = 'network:rate:' + Array.from(new Uint8Array(ipHash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,24);
+      const today = new Date().toISOString().slice(0,10);
+      const rate = await this.state.storage.get(key) || {day:today,count:0};
+      if (rate.day !== today) { rate.day=today; rate.count=0; }
+      if (rate.count >= 5) return Response.json({error:'Daily submission limit reached'},{status:429});
+      const clean = value => typeof value === 'string' ? value.trim() : '';
+      const node = {id:crypto.randomUUID(),name:clean(body.name),place:clean(body.place),category:clean(body.category),stage:clean(body.stage),description:clean(body.description),offer:clean(body.offer),need:clean(body.need),submittedAt:new Date().toISOString(),status:'pending'};
+      if (node.name.length<2 || node.name.length>90 || node.place.length>90 || node.description.length<20 || node.description.length>900 || node.offer.length>240 || node.need.length>240 || !['Regeneracja przyrody','Energia','Badania i nauka','Technologia','Edukacja','Inne'].includes(node.category)) return Response.json({error:'Invalid node fields'},{status:400});
+      const pending = await this.state.storage.get('network:pending_nodes') || [];
+      if (pending.length >= 500) return Response.json({error:'Submission queue is full'},{status:503});
+      pending.push(node); rate.count++; await this.state.storage.put(key,rate); await this.state.storage.put('network:pending_nodes',pending);
+      return Response.json({ok:true,id:node.id,status:'pending_review',message:'Zgłoszenie przyjęte do moderacji. Nie jest jeszcze publiczne.'},{status:202});
+    }
+    if (url.pathname === '/network/connections' && request.method === 'POST') {
+      let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+      const clean = value => typeof value === 'string' ? value.trim() : '';
+      const item = {id:crypto.randomUUID(),target:clean(body.target),purpose:clean(body.purpose),message:clean(body.message),submittedAt:new Date().toISOString(),status:'pending_review'};
+      if (!/^[a-zA-Z0-9_-]{1,64}$/.test(item.target) || item.purpose.length<3 || item.purpose.length>100 || item.message.length<10 || item.message.length>1200) return Response.json({error:'Invalid connection proposal'},{status:400});
+      const queue = await this.state.storage.get('network:pending_connections') || [];
+      if (queue.length >= 1000) return Response.json({error:'Connection queue is full'},{status:503});
+      queue.push(item); await this.state.storage.put('network:pending_connections',queue);
+      return Response.json({ok:true,id:item.id,status:'pending_review',message:'Propozycja została przyjęta do moderacji. Nie została jeszcze wysłana do drugiego węzła.'},{status:202});
+    }
+    if (url.pathname === '/network/admin/pending' && request.method === 'GET') {
+      const type = url.searchParams.get('type') === 'connections' ? 'connections' : 'nodes';
+      const key = type === 'nodes' ? 'network:pending_nodes' : 'network:pending_connections';
+      return Response.json({items:await this.state.storage.get(key) || []});
+    }
+    if (url.pathname === '/network/admin/review' && request.method === 'POST') {
+      let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+      if (!['nodes','connections'].includes(body.type) || !['approve','reject'].includes(body.decision) || typeof body.id !== 'string') return Response.json({error:'Invalid review action'},{status:400});
+      const key = body.type === 'nodes' ? 'network:pending_nodes' : 'network:pending_connections';
+      const queue = await this.state.storage.get(key) || [];
+      const index = queue.findIndex(item=>item.id===body.id);
+      if (index < 0) return Response.json({error:'Submission not found'},{status:404});
+      const [item] = queue.splice(index,1);
+      if (body.decision === 'approve' && body.type === 'nodes') {
+        const approved = await this.state.storage.get('network:approved_nodes') || [];
+        approved.unshift({...item,status:'published',publishedAt:new Date().toISOString()});
+        await this.state.storage.put('network:approved_nodes',approved.slice(0,1000));
+      }
+      await this.state.storage.put(key,queue);
+      return Response.json({ok:true,id:item.id,decision:body.decision});
+    }
     if (url.pathname === '/quota' && request.method === 'POST') {
       let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
       const limit = Math.max(1, Math.min(1000, Number(body.limit) || 20));
@@ -163,6 +215,29 @@ export default {
       names.forEach((name,i)=>{payload[name]=results[i].status==="fulfilled"?results[i].value:null;payload.errors[name]=results[i].status==="rejected"?String(results[i].reason?.message||results[i].reason):null;});
       return Response.json(payload,{headers});
     } catch(e) { return Response.json({error:e.message||"Shared room request failed"},{status:400,headers}); }
+  }
+  if(url.pathname==="/api/network/nodes" && (request.method==="GET" || request.method==="POST")){
+    const id=env.NEURO_BUS.idFromName("neural-link-network");
+    const target=new URL("https://neuro-bus/network/nodes");
+    const init=request.method==="POST"?{method:"POST",headers:{"content-type":"application/json","x-forwarded-for":request.headers.get("cf-connecting-ip")||""},body:await request.text()}:{method:"GET"};
+    const upstream=await env.NEURO_BUS.get(id).fetch(target.toString(),init);
+    const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
+    return new Response(upstream.body,{status:upstream.status,headers:outHeaders});
+  }
+  if(url.pathname==="/api/network/connections" && request.method==="POST"){
+    const id=env.NEURO_BUS.idFromName("neural-link-network");
+    const upstream=await env.NEURO_BUS.get(id).fetch("https://neuro-bus/network/connections",{method:"POST",headers:{"content-type":"application/json"},body:await request.text()});
+    const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
+    return new Response(upstream.body,{status:upstream.status,headers:outHeaders});
+  }
+  if(url.pathname==="/api/network/admin/pending" || url.pathname==="/api/network/admin/review"){
+    if(!env.NEURAL_LINK_ADMIN_TOKEN || request.headers.get("x-neuro-admin-token")!==env.NEURAL_LINK_ADMIN_TOKEN) return Response.json({error:"Unauthorized"},{status:401,headers});
+    const id=env.NEURO_BUS.idFromName("neural-link-network");
+    const target=new URL("https://neuro-bus"+url.pathname);
+    target.search=url.search;
+    const upstream=await env.NEURO_BUS.get(id).fetch(target.toString(),{method:request.method,headers:{"content-type":"application/json"},body:request.method==="POST"?await request.text():undefined});
+    const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
+    return new Response(upstream.body,{status:upstream.status,headers:outHeaders});
   }
   if(url.pathname==="/api/bus"){
     if(!env.NEURO_BUS_TOKEN || request.headers.get("x-neuro-token")!==env.NEURO_BUS_TOKEN) return Response.json({error:"Unauthorized"},{status:401,headers});
