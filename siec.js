@@ -129,7 +129,7 @@
     const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:data.target,purpose:data.purpose,message:data.message.trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
     if (apiBase) {
       fetch(apiBase + "/api/network/connections", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(item)})
-        .then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||"HTTP "+response.status);$("connectStatus").textContent=data.message||"Propozycja przyjęta do moderacji.";event.currentTarget.reset();})
+        .then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||"HTTP "+response.status);$("connectStatus").textContent=data.message||"Propozycja przyjęta do moderacji.";form.reset();})
         .catch(error=>{$("connectStatus").textContent="Nie udało się wysłać propozycji: "+error.message;});
       return;
     }
