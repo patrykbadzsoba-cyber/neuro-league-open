@@ -25,12 +25,19 @@ export class NeuroBus {
     }
     if (url.pathname === '/network/connections' && request.method === 'POST') {
       let body; try { body = await request.json(); } catch { return Response.json({error:'Invalid JSON'},{status:400}); }
+      const ip = request.headers.get('x-forwarded-for') || 'unknown';
+      const ipHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip));
+      const key = 'network:connection-rate:' + Array.from(new Uint8Array(ipHash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,24);
+      const today = new Date().toISOString().slice(0,10);
+      const rate = await this.state.storage.get(key) || {day:today,count:0};
+      if (rate.day !== today) { rate.day=today; rate.count=0; }
+      if (rate.count >= 10) return Response.json({error:'Daily connection proposal limit reached'},{status:429});
       const clean = value => typeof value === 'string' ? value.trim() : '';
       const item = {id:crypto.randomUUID(),target:clean(body.target),purpose:clean(body.purpose),message:clean(body.message),submittedAt:new Date().toISOString(),status:'pending_review'};
       if (!/^[a-zA-Z0-9_-]{1,64}$/.test(item.target) || item.purpose.length<3 || item.purpose.length>100 || item.message.length<10 || item.message.length>1200) return Response.json({error:'Invalid connection proposal'},{status:400});
       const queue = await this.state.storage.get('network:pending_connections') || [];
       if (queue.length >= 1000) return Response.json({error:'Connection queue is full'},{status:503});
-      queue.push(item); await this.state.storage.put('network:pending_connections',queue);
+      queue.push(item); rate.count++; await this.state.storage.put(key,rate); await this.state.storage.put('network:pending_connections',queue);
       return Response.json({ok:true,id:item.id,status:'pending_review',message:'Propozycja została przyjęta do moderacji. Nie została jeszcze wysłana do drugiego węzła.'},{status:202});
     }
     if (url.pathname === '/network/admin/pending' && request.method === 'GET') {
@@ -105,7 +112,7 @@ Kontekst projektu: otwarta, niekomercyjna inicjatywa współpracy ludzi i techno
 function cors(origin, env) {
   const allowed = (env.ALLOWED_ORIGIN || "").split(",").map(x=>x.trim()).filter(Boolean);
   const ok = allowed.includes(origin) || origin === "https://patrykbadzsoba-cyber.github.io";
-  return {"access-control-allow-origin":ok?origin:"null","access-control-allow-methods":"GET,POST,OPTIONS","access-control-allow-headers":"content-type,x-neuro-token","vary":"Origin"};
+  return {"access-control-allow-origin":ok?origin:"null","access-control-allow-methods":"GET,POST,OPTIONS","access-control-allow-headers":"content-type,x-neuro-token,x-neuro-admin-token","vary":"Origin"};
 }
 export default {
  async fetch(request, env) {
