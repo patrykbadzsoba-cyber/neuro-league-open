@@ -119,7 +119,7 @@ export default {
   const url=new URL(request.url), origin=request.headers.get("origin")||"";
   const headers=cors(origin,env);
   if(request.method==="OPTIONS") return new Response(null,{status:204,headers});
-  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,metaConfigured:!!env.META_MODEL_API_KEY,exaConfigured:!!env.EXA_API_KEY,exaDailyLimit:Number(env.EXA_DAILY_LIMIT||20),quantumConfigured:!!env.IBM_QUANTUM_TOKEN},{headers});
+  if(url.pathname==="/health") return Response.json({ok:true,service:"NEURO LEAGUE OPEN HUB",openaiConfigured:!!env.OPENAI_API_KEY,metaConfigured:!!env.META_MODEL_API_KEY,exaConfigured:!!env.EXA_API_KEY,exaDailyLimit:Number(env.EXA_DAILY_LIMIT||20),networkAdminConfigured:!!env.NEURAL_LINK_ADMIN_TOKEN,quantumConfigured:!!env.IBM_QUANTUM_TOKEN},{headers});
   if(url.pathname==="/api/v1/threads" && request.method==="POST"){
     const threadId=crypto.randomUUID();
     return Response.json({threadId,eventsUrl:"/api/v1/threads/"+threadId+"/events"},{status:201,headers});
@@ -240,7 +240,7 @@ export default {
   if(url.pathname==="/api/network/admin/pending" || url.pathname==="/api/network/admin/review"){
     if(!env.NEURAL_LINK_ADMIN_TOKEN || request.headers.get("x-neuro-admin-token")!==env.NEURAL_LINK_ADMIN_TOKEN) return Response.json({error:"Unauthorized"},{status:401,headers});
     const id=env.NEURO_BUS.idFromName("neural-link-network");
-    const target=new URL("https://neuro-bus"+url.pathname);
+    const target=new URL("https://neuro-bus"+url.pathname.slice(4));
     target.search=url.search;
     const upstream=await env.NEURO_BUS.get(id).fetch(target.toString(),{method:request.method,headers:{"content-type":"application/json"},body:request.method==="POST"?await request.text():undefined});
     const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
