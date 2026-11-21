@@ -76,8 +76,8 @@
   async function connectBackend() {
     const input = $("apiBase");
     const status = $("serverStatus");
-    const candidate = (input.value || "").trim().replace(/\\/$/, "");
-    if (!candidate || !/^https:\\/\\//i.test(candidate)) { status.textContent="Wpisz pełny adres HTTPS Workera."; return; }
+    const candidate = (input.value || "").trim().replace(/\/$/, "");
+    if (!candidate || !/^https:\/\//i.test(candidate)) { status.textContent="Wpisz pełny adres HTTPS Workera."; return; }
     status.textContent="Sprawdzam połączenie…";
     try {
       const health = await fetch(candidate + "/health");
@@ -125,7 +125,7 @@
   });
   $("connectForm").addEventListener("submit",event => {
     event.preventDefault();
-    const form = event.currentTarget;\n    const data=Object.fromEntries(new FormData(form).entries());
+    const form = event.currentTarget;
     const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:data.target,purpose:data.purpose,message:data.message.trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
     if (apiBase) {
       fetch(apiBase + "/api/network/connections", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(item)})
