@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07080f">
+  <meta name="description" content="Otwarta sieć niezależnych ludzi i projektów — NEURAL LINK.">
+  <title>NEURAL LINK — Sieć niezależnych projektów</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .network-wrap{width:min(1160px,calc(100% - 40px));margin:0 auto}
+    .network-hero{padding:78px 0 48px;display:grid;grid-template-columns:1.2fr .8fr;gap:35px;align-items:center}
+    .network-hero h1{font:600 clamp(42px,6vw,72px)/1.02 var(--display);letter-spacing:-3px;margin:18px 0}
+    .network-hero p{max-width:680px;color:var(--muted);line-height:1.9}
+    .network-principle{padding:25px;border:1px solid #00d4ff55;border-radius:12px;background:linear-gradient(140deg,#111927,#10111b)}
+    .network-principle strong{display:block;font:600 19px var(--display);color:var(--cyan);margin-bottom:8px}
+    .network-principle p{font-size:12px;margin:0}
+    .network-toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:25px 0}
+    .network-toolbar input,.network-toolbar select,.node-form input,.node-form select,.node-form textarea,.connect-form select,.connect-form textarea{background:#101522;color:var(--text);border:1px solid #394158;border-radius:8px;padding:12px;font:inherit;min-width:0}
+    .network-toolbar input{flex:1;min-width:220px}
+    .network-toolbar select{min-width:150px}
+    .network-section{padding:35px 0 75px}
+    .network-heading{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:20px}
+    .network-heading h2{font:600 clamp(28px,4vw,42px)/1.1 var(--display);margin:8px 0}
+    .network-heading p{color:var(--muted);font-size:13px;margin:0;max-width:600px}
+    .node-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .node-card{border:1px solid var(--line);border-radius:11px;padding:22px;background:linear-gradient(145deg,#121521,#0c0e17);display:flex;flex-direction:column;min-height:270px}
+    .node-card h3{font:600 20px var(--display);margin:13px 0 7px}
+    .node-card p{font-size:12px;line-height:1.75;color:var(--muted)}
+    .node-meta{font-size:10px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase}
+    .node-tags{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 16px}
+    .node-tag{border:1px solid #ffffff20;border-radius:99px;padding:4px 8px;font-size:10px;color:#c5cada}
+    .node-card button{margin-top:auto;align-self:flex-start}
+    .network-btn{border:1px solid #00d4ff66;background:#0c1923;color:#eafaff;border-radius:7px;padding:10px 14px;font:600 12px var(--font);cursor:pointer}
+    .network-btn.primary{background:linear-gradient(105deg,#ff2e9a,#00a9d1);border:0;color:#fff}
+    .network-btn:disabled{opacity:.5;cursor:not-allowed}
+    .network-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .network-panel{padding:24px;border:1px solid var(--line);border-radius:11px;background:#0e111b}
+    .network-panel h3{font:600 22px var(--display);margin:0 0 8px}
+    .network-panel>p{font-size:12px;color:var(--muted);line-height:1.8}
+    .node-form,.connect-form{display:grid;gap:9px;margin-top:15px}
+    .node-form label,.connect-form label{font-size:11px;color:#c5cada}
+    .node-form textarea,.connect-form textarea{width:100%;resize:vertical}
+    .node-form input,.node-form select,.connect-form select{width:100%}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .network-notice{margin:22px 0;padding:16px;border:1px solid #ff2e9a44;border-radius:9px;background:#ff2e9a0b;color:#c8ccda;font-size:11px;line-height:1.8}
+    .network-status{min-height:22px;color:var(--cyan);font-size:11px;margin:8px 0 0}
+    .network-empty{padding:25px;border:1px dashed #ffffff30;border-radius:10px;color:var(--muted);font-size:13px;text-align:center}
+    .network-footer{padding:25px 0 55px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;color:var(--muted);font-size:11px}
+    .network-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+    @media(max-width:800px){.network-hero{grid-template-columns:1fr;padding-top:55px}.node-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.network-panels{grid-template-columns:1fr}}
+    @media(max-width:540px){.network-wrap{width:calc(100% - 30px)}.node-grid{grid-template-columns:1fr}.network-heading{display:block}.network-heading p{margin-top:8px}.form-row{grid-template-columns:1fr}.network-footer{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">N<span>·</span></span><span class="brand-name">NEURO LEAGUE <b>OPEN</b></span></a>
+    <nav style="display:flex"><a href="index.html">Strona główna</a><a href="#wezel">Węzły</a><a href="#zglos">Zgłoś projekt</a><a href="docs/NETWORK_CONNECTION_MODEL_v0.1.md">Model sieci</a></nav>
+  </header>
+  <main class="network-wrap">
+    <section class="network-hero">
+      <div>
+        <div class="eyebrow"><span class="pulse"></span> NEURAL LINK · OTWARTA SIEĆ</div>
+        <h1>Nie musimy być jedną organizacją, żeby <span class="gradient-text">działać razem.</span></h1>
+        <p>NEURAL LINK łączy niezależnych ludzi i projekty, które chcą wymieniać wiedzę, doświadczenia i sprawdzone metody. Każdy zachowuje własną nazwę, decyzje i autonomię. Sieć ma ułatwiać współpracę, a nie przejmować kontrolę.</p>
+      </div>
+      <aside class="network-principle">
+        <strong>Nie chcemy mieć członków. Chcemy tworzyć połączenia.</strong>
+        <p>Odnajdź inicjatywę, przedstaw własny projekt albo przygotuj propozycję współpracy. Bez obowiązkowego członkostwa i bez opłat za podstawowy udział.</p>
+      </aside>
+    </section>
+
+    <section class="network-section" id="wezel">
+      <div class="network-heading">
+        <div><div class="section-kicker">01 / MAPA WSPÓŁPRACY</div><h2>Niezależne węzły</h2><p>Węzeł to osoba, społeczność lub projekt działający we własnym imieniu. Poniżej znajduje się pierwszy wpis demonstracyjny.</p></div>
+      </div>
+      <div class="network-toolbar">
+        <input id="nodeSearch" type="search" placeholder="Szukaj projektu, miejsca lub tematu…" aria-label="Szukaj węzłów">
+        <select id="nodeCategory" aria-label="Filtruj według obszaru"><option value="">Wszystkie obszary</option><option>Regeneracja przyrody</option><option>Energia</option><option>Badania i nauka</option><option>Technologia</option><option>Edukacja</option><option>Inne</option></select>
+        <button class="network-btn" id="exportData" type="button">Eksportuj moje dane</button>
+      </div>
+      <div class="node-grid" id="nodeGrid" aria-live="polite"></div>
+      <div class="network-notice"><strong>Uczciwy status prototypu:</strong> katalog i formularze zapisują dane lokalnie w przeglądarce tego urządzenia. Nie ma jeszcze wspólnej bazy, publicznego przesyłania zgłoszeń ani wiadomości między odwiedzającymi. Nie przedstawiamy lokalnego szkicu jako aktywnego połączenia między ludźmi.</div>
+    </section>
+
+    <section class="network-section" id="zglos">
+      <div class="section-heading"><div><div class="section-kicker">02 / TWOJA INICJATYWA</div><h2>Zgłoś niezależny węzeł</h2></div><p>Nie musisz reprezentować organizacji. Możesz zgłosić także mały lokalny projekt, pomysł lub własne kompetencje. Nie publikuj danych wrażliwych.</p></div>
+      <div class="network-panels">
+        <section class="network-panel">
+          <h3>Przedstaw projekt</h3>
+          <p>Utwórz lokalną kartę inicjatywy. Wybierz, co oferujesz i jakiego rodzaju współpracy szukasz.</p>
+          <form id="nodeForm" class="node-form">
+            <div class="form-row"><div><label for="nodeName">Nazwa węzła / projektu</label><input id="nodeName" name="name" maxlength="90" required placeholder="Np. lokalna inicjatywa rzeczna"></div><div><label for="nodePlace">Miejsce (kraj / region)</label><input id="nodePlace" name="place" maxlength="90" required placeholder="Np. Bułgaria, Płowdiw"></div></div>
+            <div class="form-row"><div><label for="nodeType">Obszar działania</label><select id="nodeType" name="category" required><option value="">Wybierz obszar</option><option>Regeneracja przyrody</option><option>Energia</option><option>Badania i nauka</option><option>Technologia</option><option>Edukacja</option><option>Inne</option></select></div><div><label for="nodeStage">Etap</label><select id="nodeStage" name="stage"><option>Pomysł</option><option>Przygotowanie</option><option>Działanie lokalne</option><option>Weryfikacja rezultatów</option></select></div></div>
+            <label for="nodeDescription">Co robicie i jaki problem chcecie rozwiązać?</label><textarea id="nodeDescription" name="description" rows="4" maxlength="900" required placeholder="Krótko opisz cel i aktualny stan. Oddziel plany od wykonanych działań."></textarea>
+            <label for="nodeOffer">Co możecie wnieść?</label><input id="nodeOffer" name="offer" maxlength="240" placeholder="Np. obserwacje terenowe, wiedza, tłumaczenie">
+            <label for="nodeNeed">Jakiej współpracy szukacie?</label><input id="nodeNeed" name="need" maxlength="240" placeholder="Np. metody pomiarowe, partner lokalny">
+            <button class="network-btn primary" type="submit">Zapisz lokalną kartę węzła</button>
+            <p class="network-status" id="nodeStatus" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="network-panel">
+          <h3>Zaproponuj połączenie</h3>
+          <p>Wybierz węzeł, z którym chcesz nawiązać współpracę, i opisz konkretną propozycję. W prototypie będzie to lokalny szkic, nie wysłana wiadomość.</p>
+          <form id="connectForm" class="connect-form">
+            <label for="connectTarget">Węzeł, z którym chcesz się połączyć</label><select id="connectTarget" name="target" required></select>
+            <label for="connectPurpose">Rodzaj współpracy</label><select id="connectPurpose" name="purpose" required><option>Wymiana wiedzy i metod</option><option>Wspólne badanie lub pomiar</option><option>Wsparcie techniczne</option><option>Współpraca terenowa</option><option>Inna propozycja</option></select>
+            <label for="connectMessage">Twoja propozycja</label><textarea id="connectMessage" name="message" rows="6" maxlength="1200" required placeholder="Napisz, co proponujesz, co możesz wnieść i czego potrzebujesz."></textarea>
+            <button class="network-btn primary" type="submit">Zapisz szkic propozycji</button>
+            <p class="network-status" id="connectStatus" role="status" aria-live="polite"></p>
+          </form>
+          <div class="network-actions"><button class="network-btn" id="exportConnections" type="button">Eksportuj propozycje</button><a class="network-btn" href="index.html#zasady">Zobacz zasady autonomii</a></div>
+        </section>
+      </div>
+    </section>
+    <section class="network-section">
+      <div class="network-heading"><div><div class="section-kicker">03 / ZASADY POŁĄCZENIA</div><h2>Połączenie bez podporządkowania</h2></div></div>
+      <div class="rules-list">
+        <div><b>01</b><span>Dobrowolność</span><small>Każdy sam decyduje, czy i z kim współpracuje.</small></div>
+        <div><b>02</b><span>Autonomia</span><small>Węzeł zachowuje własną nazwę, decyzje, zasoby i dorobek.</small></div>
+        <div><b>03</b><span>Transparentność</span><small>Plany, hipotezy i zweryfikowane wyniki muszą być rozróżniane.</small></div>
+        <div><b>04</b><span>Prawo do odejścia</span><small>Uczestnik może zakończyć współpracę bez utraty własnego projektu.</small></div>
+        <div><b>05</b><span>Wymiana zamiast przejęcia</span><small>Wiedza może krążyć, ale własność i kontrola pozostają u twórców.</small></div>
+      </div>
+    </section>
+  </main>
+  <footer class="network-wrap network-footer"><span>NEURAL LINK · LIFE IS THE CENTER.</span><a href="index.html">Powrót do NEURO LEAGUE OPEN ↑</a></footer>
+  <script src="siec.js"></script>
+</body>
+</html>
