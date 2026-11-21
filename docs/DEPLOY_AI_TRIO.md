@@ -58,3 +58,52 @@ Po opublikowaniu aktualnego `hub.html` w GitHub Pages otwórz pokój w Safari na
 
 ## Granica obecnego statusu
 Zmiany w repozytorium nie potwierdzają jeszcze wdrożenia Cloudflare Worker ani działających wywołań dostawców. Dopóki testy powyżej nie przejdą, status integracji AI pozostaje „kod przygotowany — wdrożenie do weryfikacji”.
+
+
+## NEURAL LINK — uruchomienie wspólnego katalogu węzłów
+
+Kod katalogu i API znajduje się w:
+- `siec.html` i `siec.js` — katalog, filtrowanie, zgłoszenia i propozycje połączeń;
+- `worker.js` — API oraz kolejka zgłoszeń w Cloudflare Durable Objects;
+- `docs/NEURAL_LINK_API_v0.1.md` — opis endpointów i moderacji.
+
+### Co robi backend
+- `GET /api/network/nodes` zwraca wyłącznie zaakceptowane, publiczne karty węzłów.
+- `POST /api/network/nodes` przyjmuje nowe zgłoszenie do kolejki moderacji (maksymalnie 5 zgłoszeń dziennie z jednego adresu IP).
+- `POST /api/network/connections` przyjmuje propozycję połączenia do prywatnej kolejki (maksymalnie 10 dziennie z jednego adresu IP).
+- `GET /api/network/admin/pending?type=nodes` oraz `?type=connections` pokazują kolejki administratorowi.
+- `POST /api/network/admin/review` zatwierdza lub odrzuca zgłoszenie. Zatwierdzone karty węzłów stają się publiczne.
+
+Zgłoszenia nie są automatycznie wysyłane do właścicieli innych węzłów. W tej wersji propozycje połączeń trafiają do prywatnej kolejki moderacji; system nie ma jeszcze kont uczestników, powiadomień ani prywatnych skrzynek.
+
+### Wymagane wdrożenie
+1. W Cloudflare Workerze `neuro-league-open-api` dodaj sekret `NEURAL_LINK_ADMIN_TOKEN` — długi, losowy token dostępny wyłącznie administratorowi. Nie zapisuj go w repozytorium ani w przeglądarce.
+2. Wykonaj ponowne wdrożenie Workera po aktualizacji `worker.js`:
+   `npx wrangler secret put NEURAL_LINK_ADMIN_TOKEN`
+   `npx wrangler deploy`
+3. Otwórz `siec.html` i wpisz adres wdrożonego Workera w polu „Adres serwera NEURAL LINK”. Wybierz „Połącz i odśwież”.
+4. Sprawdź `GET /health`: `networkAdminConfigured` powinno mieć wartość `true`.
+5. Wyślij testowe zgłoszenie. Powinno otrzymać status `pending_review`; nie może pojawić się publicznie przed zatwierdzeniem.
+
+### Moderacja przez API
+Pobranie oczekujących zgłoszeń:
+```bash
+curl -H "x-neuro-admin-token: $NEURAL_LINK_ADMIN_TOKEN" \
+  "https://WORKER-URL/api/network/admin/pending?type=nodes"
+```
+
+Zatwierdzenie lub odrzucenie karty:
+```bash
+curl -X POST "https://WORKER-URL/api/network/admin/review" \
+  -H "content-type: application/json" \
+  -H "x-neuro-admin-token: $NEURAL_LINK_ADMIN_TOKEN" \
+  -d '{"type":"nodes","id":"ID_ZGŁOSZENIA","decision":"approve"}'
+```
+
+Dla propozycji połączeń użyj `"type":"connections"` oraz decyzji `approve` lub `reject`. Zatwierdzenie propozycji nie wysyła jej jeszcze do drugiej strony — wymaga to kolejnego etapu z bezpiecznym systemem kontaktu i zgodą uczestników.
+
+### Granice i bezpieczeństwo
+- Nie ma jeszcze kont, potwierdzania tożsamości ani komunikacji prywatnej.
+- Zgłoszenia są moderowane przed publikacją; nie umieszczaj w nich danych wrażliwych.
+- Ograniczenia liczby zgłoszeń są zabezpieczeniem podstawowym, nie pełną ochroną przed spamem. Przed szerszym otwarciem należy dodać Cloudflare Turnstile, politykę retencji i narzędzia obsługi żądań usunięcia danych.
+- Nie twierdź, że backend działa produkcyjnie, dopóki Worker nie zostanie wdrożony i sprawdzony z domeny GitHub Pages.
