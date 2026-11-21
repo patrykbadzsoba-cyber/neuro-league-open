@@ -233,7 +233,7 @@ export default {
   }
   if(url.pathname==="/api/network/connections" && request.method==="POST"){
     const id=env.NEURO_BUS.idFromName("neural-link-network");
-    const upstream=await env.NEURO_BUS.get(id).fetch("https://neuro-bus/network/connections",{method:"POST",headers:{"content-type":"application/json"},body:await request.text()});
+    const upstream=await env.NEURO_BUS.get(id).fetch("https://neuro-bus/network/connections",{method:"POST",headers:{"content-type":"application/json","x-forwarded-for":request.headers.get("cf-connecting-ip")||""},body:await request.text()});
     const outHeaders=new Headers(upstream.headers); Object.entries(headers).forEach(([k,v])=>outHeaders.set(k,v));
     return new Response(upstream.body,{status:upstream.status,headers:outHeaders});
   }
