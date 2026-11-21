@@ -14,11 +14,11 @@
     source: "starter"
   };
   const $ = id => document.getElementById(id);
-  let nodes = [];
+  let nodes = [];\n  let remoteNodes = [];\n  let apiBase = "";
   let connections = [];
   try { nodes = JSON.parse(localStorage.getItem(KEY) || "[]"); if (!Array.isArray(nodes)) nodes = []; } catch { nodes = []; }
   try { connections = JSON.parse(localStorage.getItem(CONNECTIONS) || "[]"); if (!Array.isArray(connections)) connections = []; } catch { connections = []; }
-  const allNodes = () => [starter, ...nodes];
+  const allNodes = () => [starter, ...remoteNodes, ...nodes];
   const safeSave = (key, value) => {
     try { localStorage.setItem(key, JSON.stringify(value)); return true; }
     catch { return false; }
@@ -73,6 +73,33 @@
     const a = document.createElement("a"); a.href=url; a.download=name; a.click();
     URL.revokeObjectURL(url);
   }
+  async function connectBackend() {
+    const input = $("apiBase");
+    const status = $("serverStatus");
+    const candidate = (input.value || "").trim().replace(/\\/$/, "");
+    if (!candidate || !/^https:\\/\\//i.test(candidate)) { status.textContent="Wpisz pełny adres HTTPS Workera."; return; }
+    status.textContent="Sprawdzam połączenie…";
+    try {
+      const health = await fetch(candidate + "/health");
+      if (!health.ok) throw new Error("Serwer zwrócił HTTP " + health.status);
+      const healthData = await health.json();
+      const response = await fetch(candidate + "/api/network/nodes");
+      if (!response.ok) throw new Error("Nie udało się pobrać katalogu: HTTP " + response.status);
+      const data = await response.json();
+      if (!Array.isArray(data.nodes)) throw new Error("Nieprawidłowa odpowiedź katalogu.");
+      apiBase = candidate;
+      localStorage.setItem("neural-link-api-base-v1", apiBase);
+      remoteNodes = data.nodes.map(n=>({...n,source:"server"}));
+      render();
+      status.textContent="Połączono. Publiczne węzły: " + remoteNodes.length + ". Serwer: " + (healthData.service || "NEURAL LINK API") + ".";
+    } catch (error) {
+      apiBase="";
+      remoteNodes=[];
+      status.textContent="Brak połączenia: " + error.message + ". Formularze pozostają lokalne.";
+      render();
+    }
+  }
+  $("connectServer").addEventListener("click",connectBackend);
   $("nodeSearch").addEventListener("input",render);
   $("nodeCategory").addEventListener("change",render);
   $("nodeForm").addEventListener("submit",event => {
@@ -85,6 +112,12 @@
       stage:data.stage,description:data.description.trim(),offer:(data.offer||"").trim(),
       need:(data.need||"").trim(),source:"local",createdAt:new Date().toISOString()
     };
+    if (apiBase) {
+      fetch(apiBase + "/api/network/nodes", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(node)})
+        .then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||"HTTP "+response.status);$("nodeStatus").textContent=data.message||"Zgłoszenie przyjęte do moderacji.";form.reset();})
+        .catch(error=>{$("nodeStatus").textContent="Nie udało się wysłać zgłoszenia: "+error.message;});
+      return;
+    }
     nodes.unshift(node);
     if (!safeSave(KEY,nodes)) { nodes.shift(); $("nodeStatus").textContent="Brak miejsca na zapis w przeglądarce. Wyeksportuj dane lub zwolnij miejsce."; return; }
     form.reset(); $("nodeStatus").textContent="Karta została zapisana lokalnie na tym urządzeniu. Nie jest publicznie widoczna.";
@@ -94,6 +127,12 @@
     event.preventDefault();
     const data=Object.fromEntries(new FormData(event.currentTarget).entries());
     const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:data.target,purpose:data.purpose,message:data.message.trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
+    if (apiBase) {
+      fetch(apiBase + "/api/network/connections", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(item)})
+        .then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||"HTTP "+response.status);$("connectStatus").textContent=data.message||"Propozycja przyjęta do moderacji.";event.currentTarget.reset();})
+        .catch(error=>{$("connectStatus").textContent="Nie udało się wysłać propozycji: "+error.message;});
+      return;
+    }
     connections.unshift(item);
     if (!safeSave(CONNECTIONS,connections)) { connections.shift(); $("connectStatus").textContent="Nie udało się zapisać szkicu. Wyeksportuj dane lub zwolnij miejsce."; return; }
     event.currentTarget.reset(); $("connectStatus").textContent="Propozycja zapisana lokalnie. Nie została wysłana do właścicieli węzła.";
