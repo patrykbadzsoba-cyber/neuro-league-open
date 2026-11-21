@@ -22,6 +22,11 @@
     .network-toolbar input,.network-toolbar select,.node-form input,.node-form select,.node-form textarea,.connect-form select,.connect-form textarea{background:#101522;color:var(--text);border:1px solid #394158;border-radius:8px;padding:12px;font:inherit;min-width:0}
     .network-toolbar input{flex:1;min-width:220px}
     .network-toolbar select{min-width:150px}
+    .network-backend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%;padding:13px;border:1px solid #00d4ff35;border-radius:9px;background:#0b111b}
+    .network-backend label{font-size:11px;color:#aeb7cc}
+    .network-backend input{flex:1;min-width:220px;background:#101522;color:var(--text);border:1px solid #394158;border-radius:8px;padding:10px;font:inherit}
+    .network-backend span{width:100%;font-size:11px;color:var(--muted)}
+
     .network-section{padding:35px 0 75px}
     .network-heading{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:20px}
     .network-heading h2{font:600 clamp(28px,4vw,42px)/1.1 var(--display);margin:8px 0}
@@ -82,6 +87,7 @@
         <input id="nodeSearch" type="search" placeholder="Szukaj projektu, miejsca lub tematu…" aria-label="Szukaj węzłów">
         <select id="nodeCategory" aria-label="Filtruj według obszaru"><option value="">Wszystkie obszary</option><option>Regeneracja przyrody</option><option>Energia</option><option>Badania i nauka</option><option>Technologia</option><option>Edukacja</option><option>Inne</option></select>
         <button class="network-btn" id="exportData" type="button">Eksportuj moje dane</button>
+        <div class="network-backend"><label for="apiBase">Adres serwera NEURAL LINK</label><input id="apiBase" type="url" placeholder="https://nazwa-workera.workers.dev" autocomplete="url"><button class="network-btn" id="connectServer" type="button">Połącz i odśwież</button><span id="serverStatus" role="status">Tryb lokalny — bez wspólnej bazy</span></div>
       </div>
       <div class="node-grid" id="nodeGrid" aria-live="polite"></div>
       <div class="network-notice"><strong>Uczciwy status prototypu:</strong> katalog i formularze zapisują dane lokalnie w przeglądarce tego urządzenia. Nie ma jeszcze wspólnej bazy, publicznego przesyłania zgłoszeń ani wiadomości między odwiedzającymi. Nie przedstawiamy lokalnego szkicu jako aktywnego połączenia między ludźmi.</div>
