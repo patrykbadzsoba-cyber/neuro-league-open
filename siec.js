@@ -125,7 +125,7 @@
   });
   $("connectForm").addEventListener("submit",event => {
     event.preventDefault();
-    const data=Object.fromEntries(new FormData(event.currentTarget).entries());
+    const form = event.currentTarget;\n    const data=Object.fromEntries(new FormData(form).entries());
     const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:data.target,purpose:data.purpose,message:data.message.trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
     if (apiBase) {
       fetch(apiBase + "/api/network/connections", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(item)})
@@ -135,7 +135,7 @@
     }
     connections.unshift(item);
     if (!safeSave(CONNECTIONS,connections)) { connections.shift(); $("connectStatus").textContent="Nie udało się zapisać szkicu. Wyeksportuj dane lub zwolnij miejsce."; return; }
-    event.currentTarget.reset(); $("connectStatus").textContent="Propozycja zapisana lokalnie. Nie została wysłana do właścicieli węzła.";
+    form.reset(); $("connectStatus").textContent="Propozycja zapisana lokalnie. Nie została wysłana do właścicieli węzła.";
   });
   $("exportData").addEventListener("click",()=>download("neural-link-wezly.json",{starter,nodes,exportedAt:new Date().toISOString()}));
   $("exportConnections").addEventListener("click",()=>download("neural-link-propozycje-polaczen.json",{connections,exportedAt:new Date().toISOString()}));
