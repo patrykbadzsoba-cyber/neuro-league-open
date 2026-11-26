@@ -46,6 +46,14 @@ A responsive static portal exploring human-centred technology, cooperation, and 
 - The three-agent connection requires deployment and provider credentials; it is not claimed as live.
 - Language packs cover key interface areas, not every element.
 
+### 3. Cross-model AI dialogue and interoperability research — NEURAL LINK
+
+As part of NEURAL LINK, I initiated and documented a dialogue with Meta AI as an independent AI conversation partner. The discussion examined the NEURAL LINK Communication Core 0.1, privacy by design, the right to leave, safety, dissemination, and interoperability between independent AI systems.
+
+The Meta AI conversation provided conceptual feedback, including suggestions concerning forkability, AI as a translator rather than an authority, and an Ecosystem Service Protocol. This work demonstrates experience in framing technical and governance questions for AI systems, evaluating AI-generated proposals, and incorporating feedback into project architecture.
+
+**Scope and status:** This was a conversation with Meta AI, not a formal partnership, employment relationship, Meta endorsement, or technical integration. A separate draft request for official WhatsApp/Cloud API integration was prepared but was not sent. No confirmed response from a Meta partnerships or research team is claimed.
+
 ## Roles of interest
 
 - Junior AI Tester / AI Quality Assurance
