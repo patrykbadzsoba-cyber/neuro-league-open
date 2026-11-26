@@ -46,11 +46,6 @@ A responsive static portal exploring human-centred technology, cooperation, and 
 - The three-agent connection requires deployment and provider credentials; it is not claimed as live.
 - Language packs cover key interface areas, not every element.
 
-### 3. FlipperOne Testing
-Repository: https://github.com/patrykbadzsoba-cyber/flipperone-testing
-
-A public technical repository to be reviewed further for specific testing contributions before assigning detailed claims.
-
 ## Roles of interest
 
 - Junior AI Tester / AI Quality Assurance
