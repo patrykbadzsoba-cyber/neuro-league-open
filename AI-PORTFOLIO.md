@@ -57,7 +57,8 @@ The Meta AI conversation provided conceptual feedback, including suggestions con
 ## Practical AI collaboration and evaluation evidence
 
 - [Human–AI Collaboration Report](HUMAN-AI-COLLABORATION-REPORT.md) — qualitative case study based on available project artefacts and collaboration history. It is not a certification or independent audit.
-- [Polish-language AI Evaluation Test Plan](AI-EVALUATION-PL-TEST-PLAN.md) — reproducible evaluation protocol, scoring rubric, and illustrative test cases. It is a test plan, not completed benchmark results; no model scores are claimed.
+- [Polish-language AI Evaluation Test Plan](AI-EVALUATION-PL-TEST-PLAN.md) — repeatable evaluation protocol, scoring rubric, and eight test prompts.
+- [Polish-language AI Evaluation — Self-Test Results](AI-EVALUATION-PL-RESULTS-SELF-TEST-01.md) — initial eight-case self-evaluation of this ChatGPT session. Result: 94/96 under the stated rubric. This is not an independent audit, not a cross-model comparison, and not a general model benchmark.
 
 ## Roles of interest
 
@@ -76,4 +77,4 @@ The Meta AI conversation provided conceptual feedback, including suggestions con
 
 ## Evidence and next improvements
 
-This portfolio describes repository documentation and project scope, not independently audited production systems. Next steps are to run the evaluation test plan on actual model outputs, retain prompts and anonymized evidence, add screenshots and short demos, and publish a separate results report. Any external API integration should be labelled deployed only after a successful live test.
+This portfolio describes repository documentation and project scope, not independently audited production systems. The first evaluation sample is a self-review by the evaluated ChatGPT session. Next steps are independent human scoring and a second-model comparison using identical prompts, with exact outputs and model versions retained. Any external API integration should be labelled deployed only after a successful live test.
