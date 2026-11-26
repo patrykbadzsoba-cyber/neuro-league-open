@@ -54,6 +54,11 @@ The Meta AI conversation provided conceptual feedback, including suggestions con
 
 **Scope and status:** This was a conversation with Meta AI, not a formal partnership, employment relationship, Meta endorsement, or technical integration. A separate draft request for official WhatsApp/Cloud API integration was prepared but was not sent. No confirmed response from a Meta partnerships or research team is claimed.
 
+## Practical AI collaboration and evaluation evidence
+
+- [Human–AI Collaboration Report](HUMAN-AI-COLLABORATION-REPORT.md) — qualitative case study based on available project artefacts and collaboration history. It is not a certification or independent audit.
+- [Polish-language AI Evaluation Test Plan](AI-EVALUATION-PL-TEST-PLAN.md) — reproducible evaluation protocol, scoring rubric, and illustrative test cases. It is a test plan, not completed benchmark results; no model scores are claimed.
+
 ## Roles of interest
 
 - Junior AI Tester / AI Quality Assurance
@@ -71,4 +76,4 @@ The Meta AI conversation provided conceptual feedback, including suggestions con
 
 ## Evidence and next improvements
 
-This portfolio describes repository documentation and project scope, not independently audited production systems. Next steps are to add screenshots, short demo videos, a test plan with reproducible test cases, and a small AI response-evaluation sample in Polish. Any external API integration should be labelled deployed only after a successful live test.
+This portfolio describes repository documentation and project scope, not independently audited production systems. Next steps are to run the evaluation test plan on actual model outputs, retain prompts and anonymized evidence, add screenshots and short demos, and publish a separate results report. Any external API integration should be labelled deployed only after a successful live test.
