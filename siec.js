@@ -14,7 +14,9 @@
     source: "starter"
   };
   const $ = id => document.getElementById(id);
-  let nodes = [];\n  let remoteNodes = [];\n  let apiBase = "";
+  let nodes = [];
+  let remoteNodes = [];
+  let apiBase = "";
   let connections = [];
   try { nodes = JSON.parse(localStorage.getItem(KEY) || "[]"); if (!Array.isArray(nodes)) nodes = []; } catch { nodes = []; }
   try { connections = JSON.parse(localStorage.getItem(CONNECTIONS) || "[]"); if (!Array.isArray(connections)) connections = []; } catch { connections = []; }
@@ -126,7 +128,12 @@
   $("connectForm").addEventListener("submit",event => {
     event.preventDefault();
     const form = event.currentTarget;
-    const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:data.target,purpose:data.purpose,message:data.message.trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
+    const data = Object.fromEntries(new FormData(form).entries());
+    const item={id:"CON-"+Date.now().toString(36).toUpperCase(),target:String(data.target||""),purpose:String(data.purpose||""),message:String(data.message||"").trim(),createdAt:new Date().toISOString(),status:"Lokalny szkic — niewysłany"};
+    if (!item.target || item.purpose.length < 3 || item.message.length < 10) {
+      $("connectStatus").textContent="Wybierz węzeł i wpisz propozycję (co najmniej 10 znaków).";
+      return;
+    }
     if (apiBase) {
       fetch(apiBase + "/api/network/connections", {method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(item)})
         .then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.error||"HTTP "+response.status);$("connectStatus").textContent=data.message||"Propozycja przyjęta do moderacji.";form.reset();})
