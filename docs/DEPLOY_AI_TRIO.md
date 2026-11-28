@@ -107,3 +107,17 @@ Dla propozycji połączeń użyj `"type":"connections"` oraz decyzji `approve` l
 - Zgłoszenia są moderowane przed publikacją; nie umieszczaj w nich danych wrażliwych.
 - Ograniczenia liczby zgłoszeń są zabezpieczeniem podstawowym, nie pełną ochroną przed spamem. Przed szerszym otwarciem należy dodać Cloudflare Turnstile, politykę retencji i narzędzia obsługi żądań usunięcia danych.
 - Nie twierdź, że backend działa produkcyjnie, dopóki Worker nie zostanie wdrożony i sprawdzony z domeny GitHub Pages.
+
+
+## Automatyczne wdrożenie przez GitHub Actions
+
+W repozytorium dodano ręczny workflow `.github/workflows/deploy-worker.yml`. Aby uruchomić wdrożenie bez lokalnego terminala:
+
+1. W ustawieniach repozytorium otwórz **Settings → Secrets and variables → Actions → New repository secret**.
+2. Dodaj `CLOUDFLARE_API_TOKEN` (token Cloudflare z uprawnieniem **Account → Workers Scripts → Edit** dla właściwego konta).
+3. Dodaj `CLOUDFLARE_ACCOUNT_ID` (identyfikator konta Cloudflare).
+4. W GitHub otwórz **Actions → Deploy NEURO LEAGUE OPEN API → Run workflow**.
+
+Workflow wdraża kod Workera z `wrangler.toml`. Sekrety dostawców AI i Exa (`OPENAI_API_KEY`, `META_MODEL_API_KEY`, `EXA_API_KEY`, opcjonalnie `NEURAL_LINK_ADMIN_TOKEN`) nadal muszą być dodane jako sekrety samego Cloudflare Worker — workflow ich nie tworzy i nie umieszcza w repozytorium.
+
+Po wdrożeniu Cloudflare przypisze adres `https://neuro-league-open-api.<subdomena-konta>.workers.dev`. Ten adres należy wkleić do pola „Adres Cloudflare Worker” w NEURO OPEN DESKTOP oraz do pola serwera w katalogu NEURAL LINK. Nie wpisuj kluczy API do tych pól.
